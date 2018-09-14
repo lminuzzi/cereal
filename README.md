@@ -1,2 +1,2 @@
 # cereal
-poc using Spring Boot with REST API
+PoC using Spring Boot with REST API
