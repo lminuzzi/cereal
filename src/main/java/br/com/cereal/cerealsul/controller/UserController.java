@@ -41,6 +41,11 @@ public class UserController {
         return userService.findOne(id);
     }
 
+    @RequestMapping(value = "/user/login/{username}", method = RequestMethod.GET)
+    public User findByName(@PathVariable String username) {
+        return userService.findByUsername(username);
+    }
+
     @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
     public User update(@PathVariable long id, @RequestBody User user) {
         user.setId(id);

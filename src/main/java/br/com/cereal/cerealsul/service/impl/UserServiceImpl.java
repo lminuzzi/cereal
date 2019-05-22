@@ -26,10 +26,14 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(userId);
         if (user == null) {
-            throw new UsernameNotFoundException("Invalid username or password.");
+            throw new UsernameNotFoundException("Usuario ou senha invalidos.");
         }
         return new org.springframework.security.core.userdetails.User(user.getUsername(),
                 user.getPassword(), getAuthority());
+    }
+
+    public User findByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username);
     }
 
     private List<SimpleGrantedAuthority> getAuthority() {
