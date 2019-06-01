@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Data
 @Embeddable
 public class Compra implements Serializable {
-    private String compraCorret;
+    private Double compraCorret;
     private Double compraCorretTotal;
     private Double compraCusto;
     private Double compraCustoTotal;
@@ -32,4 +32,23 @@ public class Compra implements Serializable {
     private TipoAtividadeCompra tipoAtividadeCompra;
     @Transient
     private Boolean possuiProRural;
+    @Transient
+    private Boolean compraPossuiFrete;
+    @Transient
+    private Boolean compraPossuiCorretor;
+    @Transient
+    private Boolean funrural;
+    @Transient
+    private Double valorIcmsProdutor;
+    @Transient
+    private CompraTaxa compraTaxa;
+    @Transient
+    private Double valorBrutoCompra;
+    @Transient
+    private Double valorFunRural;
+    @Transient
+    private Double valorSenar;
+    @Transient
+    private Double valorPat;
+
 }

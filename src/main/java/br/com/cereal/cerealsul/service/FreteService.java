@@ -3,38 +3,27 @@ package br.com.cereal.cerealsul.service;
 import br.com.cereal.cerealsul.model.*;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotNull;
+
 @Service
 public class FreteService {
-    public double calculaFreteCompra(Pedido pedido) {
-        double valorFrete = 0;
-        double impostoFrete = 0;
-        Compra compra = pedido.getCompra();
-        Fornecedor fornecedor = pedido.getFornecedor();
-        if(compra == null || fornecedor == null) {
-            //TODO criar Exception
-        }
-
-        return calculaFrete(compra.getCompraFrete(), compra.getCompraFreteTotal(),
-                fornecedor.getTipoPessoa(), pedido.getQtSacos());
+    public double calculaFreteCompra(@NotNull Compra compra,@NotNull Fornecedor fornecedor, Double qtSacos) {
+        return calculaFrete(compra.getCompraPossuiFrete(), compra.getCompraFreteTotal(),
+                fornecedor.getTipoPessoa(), qtSacos);
     }
 
-    public double calculaFreteVenda(Pedido pedido) {
-        Venda venda = pedido.getVenda();
-        Cliente cliente = pedido.getCliente();
-        if(venda == null || cliente == null) {
-            //TODO criar Exception
-        }
+    public double calculaFreteVenda(@NotNull Venda venda,@NotNull Cliente cliente, Double qtSacos) {
 
-        return calculaFrete(venda.getVendaFrete(), venda.getVendaFreteTotal(),
-                cliente.getTipoPessoa(), pedido.getQtSacos());
+        return calculaFrete(venda.getVendaPossuiFrete(), venda.getVendaFreteTotal(),
+                cliente.getTipoPessoa(), qtSacos);
     }
 
-    private double calculaFrete(String frete, double valorTotalFrete,
+    private double calculaFrete(boolean possuiFrete, Double valorTotalFrete,
                                 TipoPessoa tipoPessoa, double qtdSacos) {
         double valorFrete = 0;
         double impostoFrete = 0;
         // VALOR DO FRETE DE VENDA POR SACO COM TRANSPORTE PJ
-        if (frete.equals("SIM") && valorTotalFrete > 0) {
+        if (possuiFrete && valorTotalFrete > 0) {
             valorFrete = valorTotalFrete / 16.6666666666667;
             if(tipoPessoa.equals(TipoPessoa.PESSOA_FISICA)) {
                 // VALOR DO FRETE DE VENDA POR SACO COM TRANSPORTE PF

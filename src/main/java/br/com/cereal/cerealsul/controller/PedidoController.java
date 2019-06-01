@@ -3,6 +3,7 @@ package br.com.cereal.cerealsul.controller;
 import br.com.cereal.cerealsul.exception.ResourceNotFoundException;
 import br.com.cereal.cerealsul.model.Pedido;
 import br.com.cereal.cerealsul.repository.PedidoRepository;
+import br.com.cereal.cerealsul.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,14 +17,22 @@ public class PedidoController {
     @Autowired
     PedidoRepository pedidoRepository;
 
+    @Autowired
+    PedidoService pedidoService;
+
     @GetMapping()
     public List<Pedido> getAllPedidoes() {
         return pedidoRepository.findAll();
     }
 
     @PostMapping()
-    public Pedido createCliente(@Valid @RequestBody Pedido pedido) {
+    public Pedido createPedido(@Valid @RequestBody Pedido pedido) {
         return pedidoRepository.save(pedido);
+    }
+
+    @PostMapping("analisar")
+    public Pedido analisarPedido(@Valid @RequestBody Pedido pedido) {
+        return pedidoService.analisarPedido(pedido);
     }
 
     @GetMapping("/{id}")

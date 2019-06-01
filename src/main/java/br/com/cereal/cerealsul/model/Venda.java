@@ -27,4 +27,8 @@ public class Venda {
 
     @Transient
     private TipoAtividadeVenda tipoAtividadeVenda;
+    @Transient
+    private Boolean vendaPossuiFrete;
+    @Transient
+    private Boolean vendaPossuiCorretor;
 }
