@@ -58,4 +58,7 @@ public class Pedido implements Serializable {
 
     private Double valorLiq;
     private Double valorLiqTotal;
+
+    @Transient
+    private Double valorVenda;
 }

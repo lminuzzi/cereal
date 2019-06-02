@@ -9,6 +9,8 @@ import br.com.cereal.cerealsul.service.FreteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static br.com.cereal.cerealsul.service.TransformaReaisService.transformar;
+
 @Service(value = "compraService")
 public class CompraServiceImpl implements CompraService {
     @Autowired
@@ -23,16 +25,17 @@ public class CompraServiceImpl implements CompraService {
     public Compra calcularAnaliseCompra(Pedido pedido) {
         compra = pedido.getCompra();
         compra.setCompraTaxa(compraTaxaService.calcularTaxas(pedido));
-        compra.setValorBrutoCompra(this.calcularValorBrutoDeCompra(compra.getCompraTaxa(), pedido.getValorLiq()));
-        compra.setValorIcmsProdutor(this.calcularValorIcmsProdutor());
-        compra.setValorFunRural(calcularValorFunrural());
-        compra.setValorSenar(calcularValorSenar());
-        compra.setValorPat(calcularValorPat());
-        compra.setCompraFreteTotal(freteService.calculaFreteCompra(this.compra,
-                pedido.getFornecedor(), pedido.getQtSacos()));
-        compra.setCompraCorretTotal(compra.getCompraCorret());
-        compra.setCompraCustoTotal(compra.getValorBrutoCompra() +
-                compra.getCompraFreteTotal() + compra.getCompraCorretTotal());
+        compra.setValorBrutoCompra(transformar(this.calcularValorBrutoDeCompra(
+                compra.getCompraTaxa(), pedido.getValorLiq())));
+        compra.setValorIcmsProdutor(transformar(this.calcularValorIcmsProdutor()));
+        compra.setValorFunRural(transformar(calcularValorFunrural()));
+        compra.setValorSenar(transformar(calcularValorSenar()));
+        compra.setValorPat(transformar(calcularValorPat()));
+        compra.setCompraFreteTotal(transformar(freteService.calculaFreteCompra(this.compra,
+                pedido.getFornecedor(), pedido.getQtSacos())));
+        compra.setCompraCorretTotal(transformar(compra.getCompraCorret()));
+        compra.setCompraCustoTotal(transformar(compra.getValorBrutoCompra() +
+                compra.getCompraFreteTotal() + compra.getCompraCorretTotal()));
 
         return this.compra;
     }

@@ -10,11 +10,11 @@ import javax.persistence.Transient;
 @Data
 @Embeddable
 public class Venda {
-    private String vendaCorret;
+    private Double vendaCorret;
     private Double vendaCorretTotal;
     private String vendaCusto;
     private Double vendaCustoTotal;
-    private String vendaFrete;
+    private Double vendaFrete;
     private Double vendaFreteTotal;
     private String vendaImpostos;
     private Double vendaImpostosTotal;
@@ -31,4 +31,12 @@ public class Venda {
     private Boolean vendaPossuiFrete;
     @Transient
     private Boolean vendaPossuiCorretor;
+    @Transient
+    private Double vendaValorPisECofins;
+    @Transient
+    private Double vendaValorIcms;
+    @Transient
+    private Double vendaTaxaMargem;
+    @Transient
+    private Double vendaValorMargem;
 }

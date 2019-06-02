@@ -26,21 +26,19 @@ public class IcmsVendaService {
                     pedido.getVenda().getTipoAtividadeVenda());
         }
 
-        debitoIcms = pedido.getVenda().getVendaValorReal() * debitoIcms;
-        creditoIcms = pedido.getCompra().getCompraCusto() * creditoIcms;
+        debitoIcms = pedido.getValorVenda() * debitoIcms;
+        creditoIcms = pedido.getValorLiq() * creditoIcms;
 
-        double diferenca = debitoIcms = creditoIcms;
+        double diferenca = debitoIcms - creditoIcms;
         if (debitoIcms - creditoIcms <= 0) {
             return 0;
         }
         return diferenca;
-
     }
 
     // CALCULA O ICMS DE VENDA PARA POSTERIORMENTE CALCULAR SE A SALDO DE ICMS
     // NA OPERAÇÃO OU NÃO
     // QUANDO O MATERIAL É SOJA
-
     private double debitoIcmsSoja(String estadoFilial, String estadoCliente,
                                   TipoAtividadeVenda atividadeVenda) {
         double valorCalculo = 0;

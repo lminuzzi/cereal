@@ -7,14 +7,14 @@ import javax.validation.constraints.NotNull;
 
 @Service
 public class FreteService {
-    public double calculaFreteCompra(@NotNull Compra compra,@NotNull Fornecedor fornecedor, Double qtSacos) {
+    public double calculaFreteCompra(@NotNull Compra compra, @NotNull Fornecedor fornecedor, Double qtSacos) {
         return calculaFrete(compra.getCompraPossuiFrete(), compra.getCompraFreteTotal(),
                 fornecedor.getTipoPessoa(), qtSacos);
     }
 
-    public double calculaFreteVenda(@NotNull Venda venda,@NotNull Cliente cliente, Double qtSacos) {
+    public double calculaFreteVenda(@NotNull Venda venda, @NotNull Cliente cliente, Double qtSacos) {
 
-        return calculaFrete(venda.getVendaPossuiFrete(), venda.getVendaFreteTotal(),
+        return calculaFrete(venda.getVendaPossuiFrete(), venda.getVendaFrete(),
                 cliente.getTipoPessoa(), qtSacos);
     }
 
@@ -25,7 +25,7 @@ public class FreteService {
         // VALOR DO FRETE DE VENDA POR SACO COM TRANSPORTE PJ
         if (possuiFrete && valorTotalFrete > 0) {
             valorFrete = valorTotalFrete / 16.6666666666667;
-            if(tipoPessoa.equals(TipoPessoa.PESSOA_FISICA)) {
+            if (tipoPessoa.equals(TipoPessoa.PESSOA_FISICA)) {
                 // VALOR DO FRETE DE VENDA POR SACO COM TRANSPORTE PF
                 double y = valorFrete * qtdSacos;
                 impostoFrete = calculaImpostosFrete(y) / qtdSacos;
@@ -34,7 +34,7 @@ public class FreteService {
         return valorFrete + impostoFrete;
     }
 
-    public double calculaImpostosFrete(double valorTotal) {
+    private double calculaImpostosFrete(double valorTotal) {
         // SE O FRETE FOR PF ESSE MÉTODO DEVE CALCULAR OS IMPOSTOS SOBRE ESTE
         double inss = getInss(valorTotal);
         double baseIrpf = (valorTotal - inss) * 0.1;
@@ -42,8 +42,7 @@ public class FreteService {
 
         double sest = baseIrpf * 0.015;
         double senat = baseIrpf * 0.01;
-        double soma = inss + irpf + sest + senat;
-        return soma;
+        return inss + irpf + sest + senat;
     }
 
     private double getIrpf(double baseIrpf) {
