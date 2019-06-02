@@ -19,16 +19,16 @@ public class PedidoServiceImpl implements PedidoService {
     private static final int KG_POR_SACO = 60;
 
     @Autowired
-    CompraService compraService;
+    private CompraService compraService;
 
     @Autowired
-    VendaService vendaService;
+    private VendaService vendaService;
 
     @Autowired
-    ClienteRepository clienteRepository;
+    private ClienteRepository clienteRepository;
 
     @Autowired
-    FornecedorRepository fornecedorRepository;
+    private FornecedorRepository fornecedorRepository;
 
     @Override
     public Pedido analisarPedido(Pedido pedido) {
