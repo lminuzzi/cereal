@@ -46,8 +46,8 @@ public class Pedido implements Serializable {
     private Double funruralTotal;
     private String juros;
     private Double jurosTotal;
-    private String margem;
-    private String margemTotal;
+    private Double margem;
+    private Double margemTotal;
 
     private String obsMod;
     private Double peso;

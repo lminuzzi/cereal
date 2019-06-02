@@ -15,9 +15,9 @@ public class Compra implements Serializable {
     private Double compraCorretTotal;
     private Double compraCusto;
     private Double compraCustoTotal;
-    private String compraFrete;
+    private Double compraFrete;
     private Double compraFreteTotal;
-    private String compraImpostos;
+    private Double compraImpostos;
     private Double compraImpostosTotal;
     private String nomeComprador;
 

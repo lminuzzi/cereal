@@ -25,19 +25,35 @@ public class CompraServiceImpl implements CompraService {
     public Compra calcularAnaliseCompra(Pedido pedido) {
         compra = pedido.getCompra();
         compra.setCompraTaxa(compraTaxaService.calcularTaxas(pedido));
-        compra.setValorBrutoCompra(transformar(this.calcularValorBrutoDeCompra(
-                compra.getCompraTaxa(), pedido.getValorLiq())));
-        compra.setValorIcmsProdutor(transformar(this.calcularValorIcmsProdutor()));
-        compra.setValorFunRural(transformar(calcularValorFunrural()));
-        compra.setValorSenar(transformar(calcularValorSenar()));
-        compra.setValorPat(transformar(calcularValorPat()));
-        compra.setCompraFreteTotal(transformar(freteService.calculaFreteCompra(this.compra,
-                pedido.getFornecedor(), pedido.getQtSacos())));
-        compra.setCompraCorretTotal(transformar(compra.getCompraCorret()));
+        compra.setValorBrutoCompra(this.calcularValorBrutoDeCompra(
+                compra.getCompraTaxa(), pedido.getValorLiq()));
+        compra.setValorIcmsProdutor(this.calcularValorIcmsProdutor());
+        compra.setValorFunRural(calcularValorFunrural());
+        compra.setValorSenar(calcularValorSenar());
+        compra.setValorPat(calcularValorPat());
+        compra.setCompraFreteTotal(freteService.calculaFreteCompra(this.compra,
+                pedido.getFornecedor(), pedido.getQtSacos()));
+        compra.setCompraCorretTotal(compra.getCompraCorret());
         compra.setCompraCustoTotal(transformar(compra.getValorBrutoCompra() +
                 compra.getCompraFreteTotal() + compra.getCompraCorretTotal()));
-
+        transformarValores();
         return this.compra;
+    }
+
+    private void transformarValores() {
+        CompraTaxa compraTaxa = compra.getCompraTaxa();
+        compraTaxa.setTaxaFunRural(transformar(compraTaxa.getTaxaFunRural()));
+        compraTaxa.setTaxaPat(transformar(compraTaxa.getTaxaPat()));
+        compraTaxa.setTaxaSenar(transformar(compraTaxa.getTaxaSenar()));
+        compraTaxa.setTaxaIcmsProdutor(transformar(compraTaxa.getTaxaIcmsProdutor()));
+        compra.setValorBrutoCompra(transformar(compra.getValorBrutoCompra()));
+        compra.setValorIcmsProdutor(transformar(compra.getValorIcmsProdutor()));
+        compra.setValorFunRural(transformar(compra.getValorFunRural()));
+        compra.setValorSenar(transformar(compra.getValorSenar()));
+        compra.setValorPat(transformar(compra.getValorPat()));
+        compra.setCompraFreteTotal(transformar(compra.getCompraFreteTotal()));
+        compra.setCompraCorretTotal(transformar(compra.getCompraCorretTotal()));
+        compra.setCompraCustoTotal(transformar(compra.getCompraCustoTotal()));
     }
 
     private double calcularValorBrutoDeCompra(CompraTaxa compraTaxa, double valorLiq) {

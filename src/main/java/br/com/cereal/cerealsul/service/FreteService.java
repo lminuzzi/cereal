@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 @Service
 public class FreteService {
     public double calculaFreteCompra(@NotNull Compra compra, @NotNull Fornecedor fornecedor, Double qtSacos) {
-        return calculaFrete(compra.getCompraPossuiFrete(), compra.getCompraFreteTotal(),
+        return calculaFrete(compra.getCompraPossuiFrete(), compra.getCompraFrete(),
                 fornecedor.getTipoPessoa(), qtSacos);
     }
 

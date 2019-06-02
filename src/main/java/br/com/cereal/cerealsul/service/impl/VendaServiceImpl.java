@@ -27,11 +27,10 @@ public class VendaServiceImpl implements VendaService {
     @Override
     public Venda calcularAnaliseVenda(Pedido pedido) {
         venda = pedido.getVenda();
-        venda.setVendaFreteTotal(transformar(freteService.calculaFreteVenda(
-                venda, pedido.getCliente(), pedido.getQtSacos())));
-        venda.setVendaValorPisECofins(transformar(
-                pedido.getValorVenda() * pisCofinsService.calculaPisCofins(pedido)));
-        venda.setVendaValorIcms(transformar(icmsVendaService.calculaIcmsVenda(pedido)));
+        venda.setVendaFreteTotal(freteService.calculaFreteVenda(
+                venda, pedido.getCliente(), pedido.getQtSacos()));
+        venda.setVendaValorPisECofins(pedido.getValorVenda() * pisCofinsService.calculaPisCofins(pedido));
+        venda.setVendaValorIcms(icmsVendaService.calculaIcmsVenda(pedido));
         if (venda.getVendaPossuiCorretor()) {
             venda.setVendaCorretTotal(venda.getVendaCorret());
         } else {
@@ -39,8 +38,8 @@ public class VendaServiceImpl implements VendaService {
         }
         venda.setVendaCustoTotal(transformar(pedido.getCompra().getCompraCustoTotal() + venda.getVendaFreteTotal()
                 + venda.getVendaCorretTotal() + venda.getVendaValorIcms() + venda.getVendaValorPisECofins()));
-        venda.setVendaValorMargem(transformar(pedido.getValorVenda() - venda.getVendaCustoTotal()));
-        venda.setVendaTaxaMargem(transformar(venda.getVendaValorMargem() / pedido.getValorVenda()));
+        pedido.setMargemTotal(pedido.getValorVenda() - venda.getVendaCustoTotal());
+        pedido.setMargem(pedido.getMargemTotal() / pedido.getValorVenda());
         //venda.setImpostoFreteVenda(venda.getImpostoFreteVenda());
         return venda;
     }

@@ -12,11 +12,11 @@ import javax.persistence.Transient;
 public class Venda {
     private Double vendaCorret;
     private Double vendaCorretTotal;
-    private String vendaCusto;
+    private Double vendaCusto;
     private Double vendaCustoTotal;
     private Double vendaFrete;
     private Double vendaFreteTotal;
-    private String vendaImpostos;
+    private Double vendaImpostos;
     private Double vendaImpostosTotal;
     private Double vendaValorReal;
     private Double vendaValorRealTotal;
@@ -35,8 +35,4 @@ public class Venda {
     private Double vendaValorPisECofins;
     @Transient
     private Double vendaValorIcms;
-    @Transient
-    private Double vendaTaxaMargem;
-    @Transient
-    private Double vendaValorMargem;
 }
