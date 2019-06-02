@@ -35,6 +35,8 @@ public class Compra implements Serializable {
     @Transient
     private Boolean compraPossuiFrete;
     @Transient
+    private TipoPessoa compraTipoFrete;
+    @Transient
     private Boolean compraPossuiCorretor;
     @Transient
     private Boolean funrural;

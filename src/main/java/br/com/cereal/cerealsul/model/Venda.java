@@ -30,9 +30,13 @@ public class Venda {
     @Transient
     private Boolean vendaPossuiFrete;
     @Transient
+    private TipoPessoa vendaTipoFrete;
+    @Transient
     private Boolean vendaPossuiCorretor;
     @Transient
     private Double vendaValorPisECofins;
     @Transient
     private Double vendaValorIcms;
+    @Transient
+    private String estadoCliente;
 }

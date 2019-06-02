@@ -7,15 +7,14 @@ import javax.validation.constraints.NotNull;
 
 @Service
 public class FreteService {
-    public double calculaFreteCompra(@NotNull Compra compra, @NotNull Fornecedor fornecedor, Double qtSacos) {
+    public double calculaFreteCompra(@NotNull Compra compra, Double qtSacos) {
         return calculaFrete(compra.getCompraPossuiFrete(), compra.getCompraFrete(),
-                fornecedor.getTipoPessoa(), qtSacos);
+                compra.getCompraTipoFrete(), qtSacos);
     }
 
-    public double calculaFreteVenda(@NotNull Venda venda, @NotNull Cliente cliente, Double qtSacos) {
-
+    public double calculaFreteVenda(@NotNull Venda venda, Double qtSacos) {
         return calculaFrete(venda.getVendaPossuiFrete(), venda.getVendaFrete(),
-                cliente.getTipoPessoa(), qtSacos);
+                venda.getVendaTipoFrete(), qtSacos);
     }
 
     private double calculaFrete(boolean possuiFrete, Double valorTotalFrete,

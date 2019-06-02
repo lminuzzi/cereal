@@ -44,7 +44,10 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.setCompra(compraService.calcularAnaliseCompra(pedido));
         pedido.setVenda(vendaService.calcularAnaliseVenda(pedido));
 
-        System.out.println("********* analisar pedido");
+        pedido.setMargemTotal(transformar(pedido.getValorVenda() - pedido.getVenda().getVendaCustoTotal()));
+        pedido.setMargem(transformar(pedido.getMargemTotal() / pedido.getValorVenda()));
+
+        System.out.println("********* analisar pedido finalizado");
         return pedido;
     }
 }

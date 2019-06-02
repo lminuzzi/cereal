@@ -17,12 +17,12 @@ public class IcmsVendaService {
         // SOJA - CALCULA TAXA DE DEBITO
         if (pedido.getProduto().equals("SOJA")) {
             debitoIcms = this.debitoIcmsSoja(pedido.getVenda().getTradingEstado(),
-                    pedido.getCliente().getRegiao(), pedido.getVenda().getTipoAtividadeVenda());
+                    pedido.getVenda().getEstadoCliente(), pedido.getVenda().getTipoAtividadeVenda());
         }
         // MILHO - CALCULA TAXA DE DEBITO
         if (pedido.getProduto().equals("MILHO")) {
             debitoIcms = this.debitoIcmsMilho(pedido.getVenda().getTradingEstado(),
-                    pedido.getCliente().getRegiao(), pedido.getCompra().getProdutorEstado(),
+                    pedido.getCliente().getRegiao(), pedido.getVenda().getEstadoCliente(),
                     pedido.getVenda().getTipoAtividadeVenda());
         }
 
