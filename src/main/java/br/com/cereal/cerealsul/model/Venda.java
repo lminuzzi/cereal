@@ -39,4 +39,6 @@ public class Venda {
     private Double vendaValorIcms;
     @Transient
     private String estadoCliente;
+    @Transient
+    private String localDestino;
 }

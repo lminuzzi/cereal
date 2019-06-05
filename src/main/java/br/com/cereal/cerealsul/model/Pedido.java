@@ -29,6 +29,14 @@ public class Pedido implements Serializable {
     @JoinColumn(name="COD_TRADING")
     protected Cliente cliente;
 
+    @OneToOne
+    @JoinColumn(name="nrSiscdb")
+    protected PedidoDadoBancario pedidoDadoBancario;
+
+    @OneToOne
+    @JoinColumn(name="nrSiscdb")
+    protected PedidoDetalhe pedidoDetalhe;
+
     @Embedded
     private Compra compra;
 
