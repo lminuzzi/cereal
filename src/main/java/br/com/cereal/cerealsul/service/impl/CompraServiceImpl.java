@@ -32,7 +32,7 @@ public class CompraServiceImpl implements CompraService {
         compra.setValorSenar(calcularValorSenar());
         compra.setValorPat(calcularValorPat());
         compra.setCompraFreteTotal(freteService.calculaFreteCompra(this.compra, pedido.getQtSacos()));
-        compra.setCompraCorretTotal(compra.getCompraCorret());
+        compra.setCompraCorretTotal(compra.getCompraCorret() != null ? compra.getCompraCorret() : (double) 0);
         compra.setCompraCustoTotal(transformar(compra.getValorBrutoCompra() +
                 compra.getCompraFreteTotal() + compra.getCompraCorretTotal()));
         transformarValores();
