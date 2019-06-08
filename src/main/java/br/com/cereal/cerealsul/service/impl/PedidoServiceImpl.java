@@ -45,7 +45,7 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.setVenda(vendaService.calcularAnaliseVenda(pedido));
 
         pedido.setMargemTotal(transformar(pedido.getValorVenda() - pedido.getVenda().getVendaCustoTotal()));
-        pedido.setMargem(pedido.getMargemTotal() / pedido.getValorVenda());
+        pedido.setMargem(transformar((pedido.getMargemTotal() / pedido.getValorVenda()) * 100));
 
         System.out.println("********* analisar pedido finalizado");
         return pedido;
