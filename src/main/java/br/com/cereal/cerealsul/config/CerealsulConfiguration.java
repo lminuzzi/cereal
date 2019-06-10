@@ -42,7 +42,7 @@ public class CerealsulConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public BCryptPasswordEncoder encoder(){
+    public BCryptPasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
     }
 }

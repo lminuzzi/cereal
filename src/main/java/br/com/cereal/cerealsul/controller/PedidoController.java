@@ -27,7 +27,7 @@ public class PedidoController {
 
     @PostMapping()
     public Pedido createPedido(@Valid @RequestBody Pedido pedido) {
-        return pedidoRepository.save(pedido);
+        return pedidoService.salvarPedido(pedido);
     }
 
     @PostMapping("analisar")
@@ -39,27 +39,6 @@ public class PedidoController {
     public Pedido getPedidoById(@PathVariable(value = "id") Long pedidoId) {
         return pedidoRepository.findById(pedidoId)
                 .orElseThrow(() -> new ResourceNotFoundException("Pedido", "id", pedidoId));
-    }
-
-    /*
-    @GetMapping("/{codTrading}")
-    public List<Pedido> getPedidosByCodTrading(@PathVariable(value = "codTrading") Long codTrading) {
-        return pedidoRepository.findByCodTrading(codTrading)
-                .orElseThrow(() -> new ResourceNotFoundException("Pedido", "codTrading", codTrading));
-    }
-    */
-
-    @PutMapping("/{id}")
-    public Pedido updatePedido(@PathVariable(value = "id") Long pedidoId,
-                                       @Valid @RequestBody Pedido pedidoDetails) {
-
-        Pedido pedido = pedidoRepository.findById(pedidoId)
-                .orElseThrow(() -> new ResourceNotFoundException("Pedido", "id", pedidoId));
-
-        pedido.setObsMod(pedidoDetails.getObsMod());
-
-        Pedido updatedPedido = pedidoRepository.save(pedido);
-        return updatedPedido;
     }
 
     @DeleteMapping("/{id}")

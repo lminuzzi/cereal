@@ -22,7 +22,7 @@ public class Pessoa {
     private String inscEst;
 
     public TipoPessoa getTipoPessoa() {
-        if(this.getCpf() != null && !this.getCpf().trim().equals("")) {
+        if (this.getCpf() != null && !this.getCpf().trim().equals("")) {
             return TipoPessoa.PESSOA_FISICA;
         }
         return TipoPessoa.PESSOA_JURIDICA;

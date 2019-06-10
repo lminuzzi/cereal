@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -43,16 +44,16 @@ public class Pedido implements Serializable {
     @Embedded
     private Venda venda;
 
-    private Date dataPedido;
+    private LocalDate dataPedido;
     private String tpPedido;
 
     private Double custosAdicionais;
 
     private String destGrao;
     private String diasDeJuros;
-    private String funrural;
+    private Double funrural;
     private Double funruralTotal;
-    private String juros;
+    private Double juros;
     private Double jurosTotal;
     private Double margem;
     private Double margemTotal;

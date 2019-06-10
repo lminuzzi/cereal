@@ -18,7 +18,7 @@ public class PedidoDadoBancario implements Serializable {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name="nrSiscdb")
+    @JoinColumn(name = "nrSiscdb")
     protected Pedido pedido;
 
     private String titularBanco;

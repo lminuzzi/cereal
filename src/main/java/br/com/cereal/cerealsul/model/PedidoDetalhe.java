@@ -17,7 +17,7 @@ public class PedidoDetalhe {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name="nrSiscdb")
+    @JoinColumn(name = "nrSiscdb")
     protected Pedido pedido;
 
     private Double valorVenda;

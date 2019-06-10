@@ -4,4 +4,6 @@ import br.com.cereal.cerealsul.model.Pedido;
 
 public interface PedidoService {
     Pedido analisarPedido(Pedido pedido);
+
+    Pedido salvarPedido(Pedido pedido);
 }

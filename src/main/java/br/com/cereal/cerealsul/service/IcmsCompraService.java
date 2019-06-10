@@ -34,7 +34,7 @@ public class IcmsCompraService {
         if (estadoSaidaMaterial.equals("GO") && estadoFilial.equals("GO")) {
             // GO - GO > PROD OU COOPERATIVA
             if (atividadeCompra.equals(TipoAtividadeCompra.PROD)
-                || atividadeCompra.equals(TipoAtividadeCompra.COOPERATIVA)) {
+                    || atividadeCompra.equals(TipoAtividadeCompra.COOPERATIVA)) {
                 valorCalculo = 0;
             }
             // GO - GO > CEREALISTA
@@ -46,7 +46,7 @@ public class IcmsCompraService {
         // DF - GO
         if (estadoSaidaMaterial.equals("DF") && estadoFilial.equals("GO")) {
             // DF - GO > PROD COM PRORURAL
-            if(atividadeCompra.equals(TipoAtividadeCompra.PROD) && proRural) {
+            if (atividadeCompra.equals(TipoAtividadeCompra.PROD) && proRural) {
                 valorCalculo = 0.024;
             }
             // DF - GO > PROD SEM PRO RURAL, COOPERATIVA E CEREALISTAS
@@ -63,7 +63,7 @@ public class IcmsCompraService {
         // DF - MG
         if (estadoSaidaMaterial.equals("DF") && estadoFilial.equals("MG")) {
             // DF - MG > PROD COM PRO RURAL
-            if(atividadeCompra.equals(TipoAtividadeCompra.PROD) && proRural) {
+            if (atividadeCompra.equals(TipoAtividadeCompra.PROD) && proRural) {
                 valorCalculo = 0.024;
             }
             // DF - MG > PROD SEM PRORURAL, COOPERATIVA E CEREALISTA
@@ -75,7 +75,7 @@ public class IcmsCompraService {
         // MG - MG
         if (estadoSaidaMaterial.equals("MG") && estadoFilial.equals("MG")) {
             // MG - MG > PROD OU COOPERATIVA
-            if(atividadeCompra.equals(TipoAtividadeCompra.PROD)
+            if (atividadeCompra.equals(TipoAtividadeCompra.PROD)
                     || atividadeCompra.equals(TipoAtividadeCompra.COOPERATIVA)) {
                 valorCalculo = 0;
             }
