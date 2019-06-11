@@ -21,6 +21,8 @@ public class Venda {
     private Double vendaValorReal;
     private Double vendaValorRealTotal;
 
+    private String tpPedido;
+
     private String tradingCidade;
     private String tradingEstado;
     private String tradingRazaoNome;

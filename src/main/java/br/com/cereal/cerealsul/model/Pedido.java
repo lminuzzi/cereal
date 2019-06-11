@@ -20,8 +20,6 @@ public class Pedido implements Serializable {
     private Long nrSiscdb;
     private Long nrPedido;
 
-    private Long codComprador;
-
     @ManyToOne
     @JoinColumn(name="COD_PRODUTOR")
     protected Fornecedor fornecedor;
@@ -44,8 +42,10 @@ public class Pedido implements Serializable {
     @Embedded
     private Venda venda;
 
+    private Long codComprador;
+    private String nomeComprador;
+
     private LocalDate dataPedido;
-    private String tpPedido;
 
     private Double custosAdicionais;
 

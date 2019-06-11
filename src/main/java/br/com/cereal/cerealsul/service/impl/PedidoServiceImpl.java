@@ -5,10 +5,7 @@ import br.com.cereal.cerealsul.model.*;
 import br.com.cereal.cerealsul.repository.ClienteRepository;
 import br.com.cereal.cerealsul.repository.FornecedorRepository;
 import br.com.cereal.cerealsul.repository.PedidoRepository;
-import br.com.cereal.cerealsul.service.CompraService;
-import br.com.cereal.cerealsul.service.PedidoDetalheService;
-import br.com.cereal.cerealsul.service.PedidoService;
-import br.com.cereal.cerealsul.service.VendaService;
+import br.com.cereal.cerealsul.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +28,9 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Autowired
     private PedidoDetalheService pedidoDetalheService;
+
+    @Autowired
+    private PedidoDadoBancarioService pedidoDadoBancarioService;
 
     @Autowired
     private PedidoRepository pedidoRepository;
@@ -66,24 +66,31 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     public Pedido salvarPedido(Pedido pedido) {
-        Pedido pedidoSaved = pedidoRepository.save(tratarPedido(pedido));
-        PedidoDetalhe pedidoDetalhe = pedidoDetalheService.salvarByPedido(pedido);
-        pedidoSaved.setPedidoDetalhe(pedidoDetalhe);
-        return pedidoSaved;
+        Pedido pedidoTratado = tratarPedido(this.analisarPedido(pedido));
+        return pedidoTratado;
+        //Pedido pedidoSaved = pedidoRepository.save(tratarPedido(this.analisarPedido(pedido)));
+        //PedidoDetalhe pedidoDetalhe = pedidoDetalheService.salvarByPedido(pedido);
+        //pedidoSaved.setPedidoDetalhe(pedidoDetalhe);
+        //PedidoDadoBancario pedidoDadoBancario = pedidoDadoBancarioService.salvarByPedido(pedido);
+        //pedidoSaved.setPedidoDadoBancario(pedidoDadoBancario);
+        //return pedidoSaved;
     }
 
     private Pedido tratarPedido(Pedido pedido) {
         pedido.setPeso(transformar(pedido.getQtSacos()/1000));
         pedido.setQtSacos(transformar(pedido.getQtSacos() / KG_POR_SACO));
-
         pedido.setCustosAdicionais((double) 0);
         pedido.setStatus(VALOR_STATUS);
         pedido.setObsMod(VALOR_OBS_MOD);
         pedido.setDataPedido(LocalDate.now());
 
         pedido.setCompra(getCompra(pedido));
-
         pedido.setVenda(getVenda(pedido));
+
+        pedido.setValorLiqTotal(transformar(pedido.getValorLiq() * pedido.getQtSacos()));
+        pedido.setFunrural(transformar(pedido.getCompra().getValorFunRural() +
+                pedido.getCompra().getValorPat() + pedido.getCompra().getValorSenar()));
+        pedido.setFunruralTotal(transformar(pedido.getCompra().getValorFunRural() * pedido.getQtSacos()));
 
         return pedido;
     }
@@ -94,9 +101,8 @@ public class PedidoServiceImpl implements PedidoService {
         compra.setProdutorRazaoNome(fornecedor.getNomeFornecedor());
         compra.setProdutorCidade(fornecedor.getLocal());
         compra.setProdutorEstado(fornecedor.getRegiao());
-        pedido.setValorLiqTotal(transformar(pedido.getValorLiq() * pedido.getQtSacos()));
-        pedido.setFunrural(transformar(compra.getValorFunRural() + compra.getValorPat() + compra.getValorSenar()));
-        pedido.setFunruralTotal(transformar(compra.getValorFunRural() * pedido.getQtSacos()));
+        compra.setCompraImpostos(compra.getValorIcmsProdutor());
+        compra.setCompraImpostosTotal(compra.getValorIcmsProdutor() * pedido.getQtSacos());
         return compra;
     }
 
@@ -108,6 +114,8 @@ public class PedidoServiceImpl implements PedidoService {
         venda.setTradingEstado(cliente.getRegiao());
         venda.setVendaValorReal(transformar(pedido.getValorVenda()));
         venda.setVendaValorRealTotal(transformar(pedido.getValorVenda() * pedido.getQtSacos()));
+        venda.setVendaImpostos(venda.getVendaValorIcms());
+        venda.setVendaImpostosTotal(venda.getVendaValorIcms() * pedido.getQtSacos());
         return venda;
     }
 }
