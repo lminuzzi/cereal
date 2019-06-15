@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "pedidos_detalhes")
@@ -38,6 +39,11 @@ public class PedidoDetalhe {
     private Double valorFunRural;
     private Double valorSenar;
     private Double valorPat;
+    private String periodoEntrega;
+    private String localEmbarque;
+    private String filialCompra;
+    private LocalDate compraDataPagamento;
+
 
     //Venda
     private TipoAtividadeVenda tipoAtividadeVenda;
@@ -48,4 +54,5 @@ public class PedidoDetalhe {
     private Double vendaValorIcms;
     private String estadoCliente;
     private String localDestino;
+    private LocalDate vendaDataPagamento;
 }

@@ -5,8 +5,6 @@ import java.math.RoundingMode;
 
 public class TransformaReaisService {
     public static double transformar(double valor) {
-        return new BigDecimal(valor)
-                .setScale(2, RoundingMode.HALF_EVEN)
-                .doubleValue();
+        return new BigDecimal(valor).setScale(2, RoundingMode.HALF_EVEN).doubleValue();
     }
 }

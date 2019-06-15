@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
+import java.time.LocalDate;
 
 @NoArgsConstructor
 @Data
@@ -44,4 +45,6 @@ public class Venda {
     private String estadoCliente;
     @Transient
     private String localDestino;
+    @Transient
+    private LocalDate vendaDataPagamento;
 }

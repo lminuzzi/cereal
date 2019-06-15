@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @NoArgsConstructor
 @Data
@@ -51,5 +52,13 @@ public class Compra implements Serializable {
     private Double valorSenar;
     @Transient
     private Double valorPat;
+    @Transient
+    private String periodoEntrega;
+    @Transient
+    private String localEmbarque;
+    @Transient
+    private String filialCompra;
+    @Transient
+    private LocalDate compraDataPagamento;
 
 }

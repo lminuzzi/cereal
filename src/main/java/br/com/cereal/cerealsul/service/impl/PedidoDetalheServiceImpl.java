@@ -49,6 +49,7 @@ public class PedidoDetalheServiceImpl implements PedidoDetalheService {
         pedidoDetalhe.setVendaTipoFrete(venda.getVendaTipoFrete());
         pedidoDetalhe.setVendaValorIcms(venda.getVendaValorIcms());
         pedidoDetalhe.setVendaValorPisCofins(venda.getVendaValorPisECofins());
+        pedidoDetalhe.setVendaDataPagamento(venda.getVendaDataPagamento());
     }
 
     private void setPedidoDetalheCompra(PedidoDetalhe pedidoDetalhe, Compra compra) {
@@ -63,5 +64,9 @@ public class PedidoDetalheServiceImpl implements PedidoDetalheService {
         pedidoDetalhe.setValorIcmsProdutor(compra.getValorIcmsProdutor());
         pedidoDetalhe.setValorPat(compra.getValorPat());
         pedidoDetalhe.setValorSenar(compra.getValorSenar());
+        pedidoDetalhe.setPeriodoEntrega(compra.getPeriodoEntrega());
+        pedidoDetalhe.setLocalEmbarque(compra.getLocalEmbarque());
+        pedidoDetalhe.setFilialCompra(compra.getFilialCompra());
+        pedidoDetalhe.setCompraDataPagamento(compra.getCompraDataPagamento());
     }
 }
