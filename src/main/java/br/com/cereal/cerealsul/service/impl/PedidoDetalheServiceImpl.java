@@ -19,6 +19,16 @@ public class PedidoDetalheServiceImpl implements PedidoDetalheService {
         return pedidoDetalheRepository.save(getPedidoDetalhe(pedido));
     }
 
+    @Override
+    public PedidoDetalhe getByPedido(Pedido pedido) {
+        return this.getPedidoDetalhe(pedido);
+    }
+
+    @Override
+    public PedidoDetalhe salvar(PedidoDetalhe pedidoDetalhe) {
+        return pedidoDetalheRepository.save(pedidoDetalhe);
+    }
+
     private PedidoDetalhe getPedidoDetalhe(Pedido pedido) {
         PedidoDetalhe pedidoDetalhe = new PedidoDetalhe();
         pedidoDetalhe.setPedido(pedido);

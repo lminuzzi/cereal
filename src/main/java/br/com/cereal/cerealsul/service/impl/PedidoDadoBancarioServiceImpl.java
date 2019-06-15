@@ -16,4 +16,16 @@ public class PedidoDadoBancarioServiceImpl implements PedidoDadoBancarioService 
     public PedidoDadoBancario salvarByPedido(Pedido pedido) {
         return repository.save(pedido.getPedidoDadoBancario());
     }
+
+    @Override
+    public PedidoDadoBancario getByPedido(Pedido pedido) {
+        PedidoDadoBancario pedidoDadoBancario = pedido.getPedidoDadoBancario();
+        pedidoDadoBancario.setPedido(pedido);
+        return pedidoDadoBancario;
+    }
+
+    @Override
+    public PedidoDadoBancario salvar(PedidoDadoBancario pedidoDadoBancario) {
+        return repository.save(pedidoDadoBancario);
+    }
 }

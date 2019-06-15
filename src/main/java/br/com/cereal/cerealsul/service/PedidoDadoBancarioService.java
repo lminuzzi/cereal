@@ -5,4 +5,6 @@ import br.com.cereal.cerealsul.model.PedidoDadoBancario;
 
 public interface PedidoDadoBancarioService {
     PedidoDadoBancario salvarByPedido(Pedido pedido);
+    PedidoDadoBancario getByPedido(Pedido pedido);
+    PedidoDadoBancario salvar(PedidoDadoBancario pedidoDadoBancario);
 }

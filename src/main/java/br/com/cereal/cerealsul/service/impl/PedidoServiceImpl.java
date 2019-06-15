@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 import static br.com.cereal.cerealsul.service.TransformaReaisService.transformar;
 
@@ -67,19 +66,30 @@ public class PedidoServiceImpl implements PedidoService {
 
     public Pedido salvarPedido(Pedido pedido) {
         Pedido pedidoTratado = tratarPedido(this.analisarPedido(pedido));
-        return pedidoTratado;
-        //Pedido pedidoSaved = pedidoRepository.save(tratarPedido(this.analisarPedido(pedido)));
-        //PedidoDetalhe pedidoDetalhe = pedidoDetalheService.salvarByPedido(pedido);
-        //pedidoSaved.setPedidoDetalhe(pedidoDetalhe);
-        //PedidoDadoBancario pedidoDadoBancario = pedidoDadoBancarioService.salvarByPedido(pedido);
-        //pedidoSaved.setPedidoDadoBancario(pedidoDadoBancario);
-        //return pedidoSaved;
+        //return pedidoTratado;
+
+        PedidoDetalhe pedidoDetalhe = pedidoDetalheService.getByPedido(pedidoTratado);
+        PedidoDadoBancario pedidoDadoBancario = pedidoDadoBancarioService.getByPedido(pedidoTratado);
+        pedidoTratado.setPedidoDadoBancario(null);
+        pedidoTratado.setPedidoDetalhe(null);
+        Pedido pedidoSaved = pedidoRepository.save(pedidoTratado);
+        pedidoDetalhe.setPedido(pedidoSaved);
+        PedidoDetalhe pedidoDetalheSaved = pedidoDetalheService.salvar(pedidoDetalhe);
+        //pedidoSaved.setPedidoDetalhe(pedidoDetalheSaved);
+        pedidoDadoBancario.setPedido(pedidoSaved);
+        PedidoDadoBancario pedidoDadoBancarioSaved = pedidoDadoBancarioService.salvar(pedidoDadoBancario);
+        //pedidoSaved.setPedidoDadoBancario(pedidoDadoBancarioSaved);
+        return pedidoSaved;
     }
 
     private Pedido tratarPedido(Pedido pedido) {
         pedido.setPeso(transformar(pedido.getQtSacos()/1000));
         pedido.setQtSacos(transformar(pedido.getQtSacos() / KG_POR_SACO));
         pedido.setCustosAdicionais((double) 0);
+        pedido.setJuros((double) 0);
+        pedido.setJurosTotal((double) 0);
+        pedido.setNrPedido((long) 0);
+        pedido.setDiasDeJuros("0");
         pedido.setStatus(VALOR_STATUS);
         pedido.setObsMod(VALOR_OBS_MOD);
         pedido.setDataPedido(LocalDate.now());
@@ -103,6 +113,7 @@ public class PedidoServiceImpl implements PedidoService {
         compra.setProdutorEstado(fornecedor.getRegiao());
         compra.setCompraImpostos(compra.getValorIcmsProdutor());
         compra.setCompraImpostosTotal(compra.getValorIcmsProdutor() * pedido.getQtSacos());
+        compra.setCompraCusto(pedido.getValorLiq());
         return compra;
     }
 
@@ -116,6 +127,7 @@ public class PedidoServiceImpl implements PedidoService {
         venda.setVendaValorRealTotal(transformar(pedido.getValorVenda() * pedido.getQtSacos()));
         venda.setVendaImpostos(venda.getVendaValorIcms());
         venda.setVendaImpostosTotal(venda.getVendaValorIcms() * pedido.getQtSacos());
+        venda.setVendaCusto(pedido.getValorVenda());
         return venda;
     }
 }

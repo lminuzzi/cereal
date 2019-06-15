@@ -22,6 +22,7 @@ public class Venda {
     private Double vendaValorRealTotal;
 
     private String tpPedido;
+    private String destGrao;
 
     private String tradingCidade;
     private String tradingEstado;

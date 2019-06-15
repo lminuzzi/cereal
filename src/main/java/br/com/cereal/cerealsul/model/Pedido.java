@@ -28,12 +28,12 @@ public class Pedido implements Serializable {
     @JoinColumn(name="COD_TRADING")
     protected Cliente cliente;
 
-    @OneToOne
-    @JoinColumn(name="nrSiscdb")
+    @OneToOne(mappedBy = "pedido")
+    @JoinColumn(name="pedidoDadoBancario")
     protected PedidoDadoBancario pedidoDadoBancario;
 
-    @OneToOne
-    @JoinColumn(name="nrSiscdb")
+    @OneToOne(mappedBy = "pedido")
+    @JoinColumn(name="pedidoDetalhe")
     protected PedidoDetalhe pedidoDetalhe;
 
     @Embedded
@@ -49,7 +49,6 @@ public class Pedido implements Serializable {
 
     private Double custosAdicionais;
 
-    private String destGrao;
     private String diasDeJuros;
     private Double funrural;
     private Double funruralTotal;
