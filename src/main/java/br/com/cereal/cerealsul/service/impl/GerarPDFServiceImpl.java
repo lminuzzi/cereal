@@ -24,7 +24,7 @@ import java.util.stream.Stream;
 
 @Service("GerarPDFService")
 public class GerarPDFServiceImpl implements GerarPDFService {
-    private static final String PATH_INPUT = "src/main/resources/static/pdftemplatespedido.html";
+    private static final String PATH_INPUT = "src/main/resources/static/pdftemplates/pedido.html";
     private static final String PATH_OUTPUT = "src/output/htmlPedido_";
 
     private static final String COD_PRODUTOR = "COD_PRODUTOR";
