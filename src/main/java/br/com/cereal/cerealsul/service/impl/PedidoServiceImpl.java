@@ -50,6 +50,7 @@ public class PedidoServiceImpl implements PedidoService {
                         "Fornecedor", "id", pedido.getFornecedor().getIdFornecedor()));
         pedido.setCliente(cliente);
         pedido.setFornecedor(fornecedor);
+        pedido.setPeso(transformar(pedido.getQtSacos()));
         pedido.setQtSacos(transformar(pedido.getQtSacos() / KG_POR_SACO));
         pedido.setCompra(compraService.calcularAnaliseCompra(pedido));
         pedido.setVenda(vendaService.calcularAnaliseVenda(pedido));
@@ -66,7 +67,6 @@ public class PedidoServiceImpl implements PedidoService {
 
     public Pedido salvarPedido(Pedido pedido) {
         Pedido pedidoTratado = tratarPedido(this.analisarPedido(pedido));
-        //return pedidoTratado;
 
         PedidoDetalhe pedidoDetalhe = pedidoDetalheService.getByPedido(pedidoTratado);
         PedidoDadoBancario pedidoDadoBancario = pedidoDadoBancarioService.getByPedido(pedidoTratado);
@@ -75,16 +75,24 @@ public class PedidoServiceImpl implements PedidoService {
         Pedido pedidoSaved = pedidoRepository.save(pedidoTratado);
         pedidoDetalhe.setPedido(pedidoSaved);
         PedidoDetalhe pedidoDetalheSaved = pedidoDetalheService.salvar(pedidoDetalhe);
-        //pedidoSaved.setPedidoDetalhe(pedidoDetalheSaved);
+        pedidoSaved.setPedidoDetalhe(pedidoDetalheSaved);
         pedidoDadoBancario.setPedido(pedidoSaved);
         PedidoDadoBancario pedidoDadoBancarioSaved = pedidoDadoBancarioService.salvar(pedidoDadoBancario);
-        //pedidoSaved.setPedidoDadoBancario(pedidoDadoBancarioSaved);
+        pedidoSaved.setPedidoDadoBancario(pedidoDadoBancarioSaved);
+        gerarPDFPedido(pedidoSaved);
         return pedidoSaved;
     }
 
+    private void gerarPDFPedido(Pedido pedido) {
+        Pedido pedidoSaved = pedidoRepository.findById(pedido.getNrSiscdb())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Pedido", "id", pedido.getNrSiscdb()));
+        GerarPDFService.gerarPDF(pedidoSaved);
+    }
+
     private Pedido tratarPedido(Pedido pedido) {
-        pedido.setPeso(transformar(pedido.getQtSacos()/1000));
-        pedido.setQtSacos(transformar(pedido.getQtSacos() / KG_POR_SACO));
+        pedido.setPeso(transformar(pedido.getPeso()));
+        pedido.setQtSacos(transformar(pedido.getQtSacos()));
         pedido.setCustosAdicionais((double) 0);
         pedido.setJuros((double) 0);
         pedido.setJurosTotal((double) 0);
@@ -112,8 +120,9 @@ public class PedidoServiceImpl implements PedidoService {
         compra.setProdutorCidade(fornecedor.getLocal());
         compra.setProdutorEstado(fornecedor.getRegiao());
         compra.setCompraImpostos(compra.getValorIcmsProdutor());
-        compra.setCompraImpostosTotal(compra.getValorIcmsProdutor() * pedido.getQtSacos());
+        compra.setCompraImpostosTotal(transformar(compra.getValorIcmsProdutor() * pedido.getQtSacos()));
         compra.setCompraCusto(pedido.getValorLiq());
+        compra.setCompraCustoTotal(transformar(compra.getCompraCusto() * pedido.getQtSacos()));
         return compra;
     }
 
@@ -126,8 +135,9 @@ public class PedidoServiceImpl implements PedidoService {
         venda.setVendaValorReal(transformar(pedido.getValorVenda()));
         venda.setVendaValorRealTotal(transformar(pedido.getValorVenda() * pedido.getQtSacos()));
         venda.setVendaImpostos(venda.getVendaValorIcms());
-        venda.setVendaImpostosTotal(venda.getVendaValorIcms() * pedido.getQtSacos());
+        venda.setVendaImpostosTotal(transformar(venda.getVendaValorIcms() * pedido.getQtSacos()));
         venda.setVendaCusto(pedido.getValorVenda());
+        venda.setVendaCustoTotal(transformar(venda.getVendaCusto() * pedido.getQtSacos()));
         return venda;
     }
 }

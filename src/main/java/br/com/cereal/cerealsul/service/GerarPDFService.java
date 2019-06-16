@@ -1,8 +1,6 @@
-package br.com.cereal.cerealsul.service.impl;
+package br.com.cereal.cerealsul.service;
 
 import br.com.cereal.cerealsul.model.*;
-import br.com.cereal.cerealsul.service.GerarPDFService;
-import br.com.cereal.cerealsul.service.TransformaReaisService;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -23,7 +21,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 @Service("GerarPDFService")
-public class GerarPDFServiceImpl implements GerarPDFService {
+public class GerarPDFService {
     private static final String PATH_INPUT = "src/main/resources/static/pdftemplates/pedido.html";
     private static final String PATH_OUTPUT = "src/output/htmlPedido_";
 
@@ -100,8 +98,7 @@ public class GerarPDFServiceImpl implements GerarPDFService {
     private static final String DATA_PEDIDO = "DATA_PEDIDO";
     private static final String HORA_PEDIDO = "HORA_PEDIDO";
 
-    @Override
-    public String gerarPDF(Pedido pedido) {
+    public static String gerarPDF(Pedido pedido) {
         final String pathOutput = getPathOutput(pedido.getNrSiscdb());
         File file = new File(pathOutput);
         if(!file.exists()) {
@@ -115,19 +112,19 @@ public class GerarPDFServiceImpl implements GerarPDFService {
         return pathOutput;
     }
 
-    private String getPathOutput(long nrSiscdb) {
+    public static String getPathOutput(long nrSiscdb) {
         return getPrefixPath(nrSiscdb) + ".pdf";
     }
 
-    private String getPathInput(long nrSiscdb) {
+    private static String getPathInput(long nrSiscdb) {
         return getPrefixPath(nrSiscdb) + ".html";
     }
 
-    private String getPrefixPath(long nrSiscdb) {
+    private static String getPrefixPath(long nrSiscdb) {
         return PATH_OUTPUT + nrSiscdb;
     }
 
-    private void generatePDFFromHTML(Pedido pedido, String pathOutput)
+    private static void generatePDFFromHTML(Pedido pedido, String pathOutput)
             throws IOException, DocumentException {
         Document document = new Document();
         PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(pathOutput));
@@ -137,7 +134,7 @@ public class GerarPDFServiceImpl implements GerarPDFService {
         document.close();
     }
 
-    private void criarArquivoPedido(Pedido pedido) {
+    private static void criarArquivoPedido(Pedido pedido) {
         final Pattern SUBST = Pattern.compile("\\*{5}\\w+\\*{5}");
         final Map<String, String> mapaValores = initMapaValores(pedido);
         final String pathInput = getPathInput(pedido.getNrSiscdb());
@@ -149,7 +146,7 @@ public class GerarPDFServiceImpl implements GerarPDFService {
         }
     }
 
-    private String getLinhaFormatada(String linha, Map<String, String> mapaValores, Pattern SUBST) {
+    private static String getLinhaFormatada(String linha, Map<String, String> mapaValores, Pattern SUBST) {
         Matcher matcher = SUBST.matcher(linha);
         if (matcher.find()) {
             String indexRegex = matcher.group(0);
@@ -204,12 +201,14 @@ public class GerarPDFServiceImpl implements GerarPDFService {
         mapa.put(COMPRA_VALOR_LIQUIDO, "R$ " + pedido.getValorLiq().toString());
         mapa.put(COMPRA_FUNRURAL, "R$ " + compra.getValorFunRural().toString());
         mapa.put(COMPRA_IMPOSTOS, "R$ " + pedidoDetalhe.getValorIcmsProdutor().toString());
-        mapa.put(COMPRA_FRETE, "R$ " + compra.getCompraFrete().toString());
-        mapa.put(COMPRA_CORRETAGEM, "R$ " + compra.getCompraCorret().toString());
+        mapa.put(COMPRA_FRETE, "R$ " + (pedidoDetalhe.getCompraPossuiFrete() ? compra.getCompraFrete().toString() : 0));
+        mapa.put(COMPRA_CORRETAGEM, "R$ " + (pedidoDetalhe.getCompraPossuiCorretor() ?
+                compra.getCompraCorret().toString() : 0));;
         mapa.put(COMPRA_CUSTO_TOTAL, "R$ " + compra.getCompraCustoTotal().toString());
         mapa.put(VENDA_IMPOSTOS, "R$ " + pedidoDetalhe.getVendaValorIcms().toString());
-        mapa.put(VENDA_FRETE, "R$ " + venda.getVendaFrete().toString());
-        mapa.put(VENDA_CORRETAGEM, "R$ " + venda.getVendaCorret().toString());
+        mapa.put(VENDA_FRETE, "R$ " + (pedidoDetalhe.getVendaPossuiFrete() ? venda.getVendaFrete().toString() : 0));
+        mapa.put(VENDA_CORRETAGEM, "R$ " + (pedidoDetalhe.getVendaPossuiCorretor() ?
+                venda.getVendaCorret().toString() : 0));
         mapa.put(VENDA_CUSTO_FINAL, "R$ " + venda.getVendaCustoTotal().toString());
         mapa.put(VENDA_VALOR, "R$ " + pedidoDetalhe.getValorVenda().toString());
         mapa.put(VENDA_MARGEM, pedido.getMargem().toString());
@@ -222,8 +221,9 @@ public class GerarPDFServiceImpl implements GerarPDFService {
         mapa.put(PAG_FOR_VALOR_TOTAL_LIQ, "R$ " + pedido.getValorLiq().toString());
         mapa.put(PAG_FOR_TODOS_IMPOSTOS, "R$ " + pedido.getFunruralTotal().toString());
         mapa.put(PAG_FOR_IMPOSTOS_COMPRA, "R$ " + compra.getValorIcmsProdutor().toString());
-        mapa.put(PAG_FOR_FRETE, "R$ " + compra.getCompraFrete().toString());
-        mapa.put(PAG_FOR_CORRETAGEM, "R$ " + compra.getCompraCorret().toString());
+        mapa.put(PAG_FOR_FRETE, "R$ " + (pedidoDetalhe.getCompraPossuiFrete() ? compra.getCompraFrete().toString() : 0));
+        mapa.put(PAG_FOR_CORRETAGEM, "R$ " + (pedidoDetalhe.getCompraPossuiCorretor() ?
+                compra.getCompraCorret().toString() : 0));
         mapa.put(PAG_FOR_CUSTO_TOTAL_COMPRA, "R$ " + compra.getCompraCustoTotal().toString());
         mapa.put(PAG_FOR_CUSTO_POR_SACO, "R$ " + TransformaReaisService.transformar(
                 compra.getCompraCusto() / pedido.getQtSacos()));

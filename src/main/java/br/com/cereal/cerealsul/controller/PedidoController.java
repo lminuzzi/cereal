@@ -3,12 +3,20 @@ package br.com.cereal.cerealsul.controller;
 import br.com.cereal.cerealsul.exception.ResourceNotFoundException;
 import br.com.cereal.cerealsul.model.Pedido;
 import br.com.cereal.cerealsul.repository.PedidoRepository;
+import br.com.cereal.cerealsul.service.GerarPDFService;
 import br.com.cereal.cerealsul.service.PedidoService;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -21,8 +29,24 @@ public class PedidoController {
     PedidoService pedidoService;
 
     @GetMapping()
-    public List<Pedido> getAllPedidoes() {
+    public List<Pedido> getAllPedidos() {
         return pedidoRepository.findAll();
+    }
+
+    @GetMapping("pdf/{id}")
+    public void getPdfPedidos(@PathVariable(value = "id") Long pedidoId, HttpServletResponse response) {
+        String fileName = GerarPDFService.getPathOutput(pedidoId);
+        Path file = Paths.get(fileName);
+        if (Files.exists(file)) {
+            response.setContentType("application/pdf");
+            response.addHeader("Content-Disposition", "attachment; filename=" + fileName);
+            try {
+                Files.copy(file, response.getOutputStream());
+                response.getOutputStream().flush();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
     @PostMapping()
