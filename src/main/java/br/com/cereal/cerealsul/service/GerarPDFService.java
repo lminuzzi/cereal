@@ -24,6 +24,8 @@ import java.util.stream.Stream;
 public class GerarPDFService {
     private static final String PATH_INPUT = "src/main/resources/static/pdftemplates/pedido.html";
     private static final String PATH_OUTPUT = "src/output/htmlPedido_";
+    private static final String PATH_INPUT_CONTRATO = "src/main/resources/static/pdftemplates/contrato.html";
+    private static final String PATH_OUTPUT_CONTRATO = "src/output/htmlContrato_";
 
     private static final String COD_PRODUTOR = "COD_PRODUTOR";
     private static final String COMPRADOR = "COMPRADOR";
@@ -105,7 +107,7 @@ public class GerarPDFService {
             criarArquivoPedido(pedido);
         }
         try {
-            generatePDFFromHTML(pedido, pathOutput);
+            generatePDFFromHTML(pedido, pathOutput, getPathInput(pedido.getNrSiscdb()));
         } catch (IOException | DocumentException e) {
             e.printStackTrace();
         }
@@ -124,13 +126,13 @@ public class GerarPDFService {
         return PATH_OUTPUT + nrSiscdb;
     }
 
-    private static void generatePDFFromHTML(Pedido pedido, String pathOutput)
+    private static void generatePDFFromHTML(Pedido pedido, String pathOutput, String pathInput)
             throws IOException, DocumentException {
         Document document = new Document();
         PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(pathOutput));
         document.open();
         XMLWorkerHelper.getInstance().parseXHtml(writer, document,
-                new FileInputStream(getPathInput(pedido.getNrSiscdb())));
+                new FileInputStream(pathInput));
         document.close();
     }
 
@@ -254,5 +256,48 @@ public class GerarPDFService {
                 " AG: " + pedidoDadoBancario.getAgenciaBanco() +
                 " CC: " + pedidoDadoBancario.getContaBanco() +
                 " TITULAR: " + pedidoDadoBancario.getTitularBanco();
+    }
+
+    public static void gerarPDFContrato(Pedido pedido) {
+        final String pathOutput = getPathOutputContrato(pedido.getNrSiscdb());
+        File file = new File(pathOutput);
+        if(!file.exists()) {
+            criarArquivoContrato(pedido);
+        }
+        try {
+            generatePDFFromHTML(pedido, pathOutput, getPathInputContrato(pedido.getNrSiscdb()));
+        } catch (IOException | DocumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void criarArquivoContrato(Pedido pedido) {
+        final Pattern SUBST = Pattern.compile("\\*{5}\\w+\\*{5}");
+        final Map<String, String> mapaValores = initMapaValoresContrato(pedido);
+        final String pathInput = getPathInputContrato(pedido.getNrSiscdb());
+        try (Stream<String> stream = Files.lines(Paths.get(PATH_INPUT_CONTRATO))) {
+            Stream<String> newLines = stream.map(linha -> getLinhaFormatada(linha, mapaValores, SUBST));
+            Files.write(Paths.get(pathInput), (Iterable<String>)newLines::iterator);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static Map<String, String> initMapaValoresContrato(Pedido pedido) {
+        Map<String, String> mapa = new HashMap<>();
+        mapa.put(HORA_PEDIDO, "");
+        return mapa;
+    }
+
+    public static String getPathOutputContrato(long nrSiscdb) {
+        return getPrefixPathContrato(nrSiscdb) + ".pdf";
+    }
+
+    private static String getPathInputContrato(long nrSiscdb) {
+        return getPrefixPathContrato(nrSiscdb) + ".html";
+    }
+
+    private static String getPrefixPathContrato(long nrSiscdb) {
+        return PATH_OUTPUT_CONTRATO + nrSiscdb;
     }
 }

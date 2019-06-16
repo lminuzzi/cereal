@@ -80,7 +80,15 @@ public class PedidoServiceImpl implements PedidoService {
         PedidoDadoBancario pedidoDadoBancarioSaved = pedidoDadoBancarioService.salvar(pedidoDadoBancario);
         pedidoSaved.setPedidoDadoBancario(pedidoDadoBancarioSaved);
         gerarPDFPedido(pedidoSaved);
+        gerarPDFContrato(pedidoSaved);
         return pedidoSaved;
+    }
+
+    private void gerarPDFContrato(Pedido pedido) {
+        Pedido pedidoSaved = pedidoRepository.findById(pedido.getNrSiscdb())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Pedido", "id", pedido.getNrSiscdb()));
+        GerarPDFService.gerarPDFContrato(pedidoSaved);
     }
 
     private void gerarPDFPedido(Pedido pedido) {

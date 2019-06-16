@@ -49,6 +49,22 @@ public class PedidoController {
         }
     }
 
+    @GetMapping("pdfcontrato/{id}")
+    public void getPdfContratos(@PathVariable(value = "id") Long pedidoId, HttpServletResponse response) {
+        String fileName = GerarPDFService.getPathOutputContrato(pedidoId);
+        Path file = Paths.get(fileName);
+        if (Files.exists(file)) {
+            response.setContentType("application/pdf");
+            response.addHeader("Content-Disposition", "attachment; filename=" + fileName);
+            try {
+                Files.copy(file, response.getOutputStream());
+                response.getOutputStream().flush();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
     @PostMapping()
     public Pedido createPedido(@Valid @RequestBody Pedido pedido) {
         return pedidoService.salvarPedido(pedido);
