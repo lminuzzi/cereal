@@ -80,7 +80,7 @@ public class PedidoServiceImpl implements PedidoService {
         PedidoDadoBancario pedidoDadoBancarioSaved = pedidoDadoBancarioService.salvar(pedidoDadoBancario);
         pedidoSaved.setPedidoDadoBancario(pedidoDadoBancarioSaved);
         gerarPDFPedido(pedidoSaved);
-        gerarPDFContrato(pedidoSaved);
+        //gerarPDFContrato(pedidoSaved);
         return pedidoSaved;
     }
 

@@ -25,7 +25,7 @@ public class GerarPDFService {
     private static final String PATH_INPUT = "src/main/resources/static/pdftemplates/pedido.html";
     private static final String PATH_OUTPUT = "src/output/htmlPedido_";
     private static final String PATH_INPUT_CONTRATO = "src/main/resources/static/pdftemplates/contrato.html";
-    private static final String PATH_OUTPUT_CONTRATO = "src/output/htmlContrato_";
+    private static final String PATH_OUTPUT_CONTRATO = "src/output/Contratohtml_";
 
     private static final String COD_PRODUTOR = "COD_PRODUTOR";
     private static final String COMPRADOR = "COMPRADOR";
