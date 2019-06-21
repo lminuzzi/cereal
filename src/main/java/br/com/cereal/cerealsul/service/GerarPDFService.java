@@ -221,6 +221,8 @@ public class GerarPDFService {
         PedidoDadoBancario pedidoDadoBancario = pedido.getPedidoDadoBancario();
         Fornecedor fornecedor = pedido.getFornecedor();
 
+        mapa.put("NUMERO_INSTRUMENTO", "CS-" + pedido.getNrSiscdb().toString() +
+                "/" + pedido.getDataPedido().format(DateTimeFormatter.ofPattern("YYYY")));
         mapa.put("COMPRADOR_DETALHES", getCompradorDetalhes(fornecedor));
         mapa.put("VENDEDOR_DETALHES", getVendedorDetalhes(cliente));
         mapa.put("MERCADORIA", pedido.getProduto());
