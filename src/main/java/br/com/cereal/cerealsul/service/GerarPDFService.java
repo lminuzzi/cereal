@@ -22,13 +22,14 @@ import java.util.stream.Stream;
 
 @Service("GerarPDFService")
 public class GerarPDFService {
-
-    private static final String BASE_INPUT = "src/main/resources/static/pdftemplates/";
-    private static final String BASE_OUTPUT = "src/main/resources/static/output/";
-    private static final String PATH_INPUT = BASE_INPUT + "pedido.html";
-    private static final String PATH_OUTPUT = BASE_OUTPUT + "htmlPedido_";
-    private static final String PATH_INPUT_CONTRATO = BASE_INPUT + "Contrato_pedido.html";
-    private static final String PATH_OUTPUT_CONTRATO = BASE_OUTPUT + "Contratohtml_";
+    private static final String BASE_INPUT_PROD = "webapps/cerealsulapp/WEB-INF/classes/static/pdftemplates/";
+    private static final String BASE_OUTPUT_PROD = "webapps/cerealsulapp/WEB-INF/classes/static/output/";
+    //private static final String BASE_INPUT = "src/main/resources/static/pdftemplates/";
+    //private static final String BASE_OUTPUT = "src/main/resources/static/output/";
+    private static final String PATH_INPUT = BASE_INPUT_PROD + "pedido.html";
+    private static final String PATH_OUTPUT = BASE_OUTPUT_PROD + "htmlPedido_";
+    private static final String PATH_INPUT_CONTRATO = BASE_INPUT_PROD + "Contrato_pedido.html";
+    private static final String PATH_OUTPUT_CONTRATO = BASE_OUTPUT_PROD + "Contratohtml_";
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/YYYY");
 
     public static void gerarPDF(Pedido pedido) {

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 import static br.com.cereal.cerealsul.service.TransformaReaisService.transformar;
 
@@ -58,7 +59,14 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.setValorLiq(transformar(pedido.getValorLiq()));
         pedido.setValorVenda(transformar(pedido.getValorVenda()));
 
-        pedido.setMargemTotal(transformar(pedido.getValorVenda() - pedido.getVenda().getVendaCustoTotal()));
+        double descontoMargem = 0;
+        int diffDias = (int) ChronoUnit.DAYS.between(pedido.getCompra().getCompraDataPagamento(),
+                pedido.getVenda().getVendaDataPagamento());
+        if(diffDias > 15) {
+            descontoMargem = 0.88 / (30 * diffDias);
+        }
+        pedido.setMargemTotal(transformar(pedido.getValorVenda() -
+                pedido.getVenda().getVendaCustoTotal() - descontoMargem));
         pedido.setMargem(transformar((pedido.getMargemTotal() / pedido.getValorVenda()) * 100));
 
         System.out.println("********* analisar pedido finalizado");

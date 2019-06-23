@@ -12,11 +12,11 @@ public class IcmsCompraService {
         double valorCalculo = 0;
         if (pedido.getProduto().equals("MILHO")) {
             valorCalculo = calculaTaxaIcmsMilhoCompra(pedido.getCompra().getProdutorEstado(),
-                    pedido.getVenda().getTradingEstado(), pedido.getCompra().getTipoAtividadeCompra(),
+                    pedido.getCompra().getFilialCompra(), pedido.getCompra().getTipoAtividadeCompra(),
                     pedido.getCompra().getPossuiProRural());
         } else if (pedido.getProduto().equals("SOJA")) {
             valorCalculo = calculaTaxaIcmsSojaCompra(pedido.getCompra().getProdutorEstado(),
-                    pedido.getVenda().getTradingEstado(), pedido.getCompra().getTipoAtividadeCompra(),
+                    pedido.getCompra().getFilialCompra(), pedido.getCompra().getTipoAtividadeCompra(),
                     pedido.getCompra().getPossuiProRural());
         }
         return valorCalculo;
