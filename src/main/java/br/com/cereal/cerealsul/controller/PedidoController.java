@@ -5,15 +5,20 @@ import br.com.cereal.cerealsul.model.Pedido;
 import br.com.cereal.cerealsul.repository.PedidoRepository;
 import br.com.cereal.cerealsul.service.GerarPDFService;
 import br.com.cereal.cerealsul.service.PedidoService;
-import org.apache.commons.io.IOUtils;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.tool.xml.XMLWorkerHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -63,6 +68,24 @@ public class PedidoController {
             e.printStackTrace();
         }
         return sb.toString();
+    }
+
+    @PostMapping("criapdf")
+    public void createPDF(@RequestBody String caminhoParam, HttpServletResponse response) {
+        try {
+            String caminho = URLDecoder.decode(caminhoParam.replace(
+                    "caminhoParam=", ""),"UTF-8");
+            System.out.println("**** createPDF - caminho = " + caminho);
+            Document document = new Document();
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(caminho));
+            System.out.println("**** createPDF - PdfWriter criado");
+            document.open();
+            XMLWorkerHelper.getInstance().parseXHtml(writer, document,
+                    new FileInputStream("teste.pdf"));
+            document.close();
+        } catch (DocumentException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @PostMapping()

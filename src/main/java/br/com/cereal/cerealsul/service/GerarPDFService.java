@@ -22,10 +22,13 @@ import java.util.stream.Stream;
 
 @Service("GerarPDFService")
 public class GerarPDFService {
+    //private static final String BASE_INPUT_PROD = "webapps/cerealsulapp/WEB-INF/classes/static/pdftemplates/";
+    //private static final String BASE_OUTPUT_PROD = "webapps/cerealsulapp/WEB-INF/classes/static/output/";
     private static final String BASE_INPUT_PROD = "webapps/cerealsulapp/WEB-INF/classes/static/pdftemplates/";
-    private static final String BASE_OUTPUT_PROD = "webapps/cerealsulapp/WEB-INF/classes/static/output/";
+    private static final String BASE_OUTPUT_PROD = "/home/lucianominuzzi/webapps/ROOT/cerealsul/PDF/";
     //private static final String BASE_INPUT = "src/main/resources/static/pdftemplates/";
     //private static final String BASE_OUTPUT = "src/main/resources/static/output/";
+    private static final String BASE_OUTPUT_PDF = "/home/lucianominuzzi/webapps/ROOT/cerealsul/PDF/";
     private static final String PATH_INPUT = BASE_INPUT_PROD + "pedido.html";
     private static final String PATH_OUTPUT = BASE_OUTPUT_PROD + "htmlPedido_";
     private static final String PATH_INPUT_CONTRATO = BASE_INPUT_PROD + "Contrato_pedido.html";
@@ -46,7 +49,7 @@ public class GerarPDFService {
     }
 
     public static String getPathOutput(long nrSiscdb) {
-        return getPrefixPath(nrSiscdb) + ".pdf";
+        return BASE_OUTPUT_PDF + "htmlPedido_" + nrSiscdb + ".pdf";
     }
 
     private static String getPathInput(long nrSiscdb) {
@@ -59,8 +62,10 @@ public class GerarPDFService {
 
     private static void generatePDFFromHTML(String pathOutput, String pathInput)
             throws IOException, DocumentException {
+        System.out.println("**** Iniciando geração de PDF pelo HTML - pathOutput = " +
+                pathOutput + " pathInput = " + pathInput);
         Document document = new Document();
-        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(pathOutput));
+        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(new File(pathOutput)));
         document.open();
         XMLWorkerHelper.getInstance().parseXHtml(writer, document,
                 new FileInputStream(pathInput));
@@ -71,6 +76,7 @@ public class GerarPDFService {
         final Pattern SUBST = Pattern.compile("\\*{5}\\w+\\*{5}");
         final Map<String, String> mapaValores = initMapaValores(pedido);
         final String pathInput = getPathInput(pedido.getNrSiscdb());
+        System.out.println("**** criarArquivoPedido - pathInput = " + pathInput + " PATH_INPUT = " + PATH_INPUT);
         try (Stream<String> stream = Files.lines(Paths.get(PATH_INPUT))) {
             Stream<String> newLines = stream.map(linha -> getLinhaFormatada(linha, mapaValores, SUBST));
             Files.write(Paths.get(pathInput), (Iterable<String>) newLines::iterator);
@@ -274,7 +280,7 @@ public class GerarPDFService {
     }
 
     public static String getPathOutputContrato(long nrSiscdb) {
-        return getPrefixPathContrato(nrSiscdb) + ".pdf";
+        return BASE_OUTPUT_PDF + "Contratohtml_" + nrSiscdb + ".pdf";
     }
 
     private static String getPathInputContrato(long nrSiscdb) {
