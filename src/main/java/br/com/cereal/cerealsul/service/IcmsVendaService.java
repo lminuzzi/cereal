@@ -13,7 +13,7 @@ public class IcmsVendaService {
     public double calculaIcmsVenda(Pedido pedido) {
         double debitoIcms = 0;
         double creditoIcms = this.creditoIcms(pedido.getCompra().getProdutorEstado(),
-                pedido.getCompra().getProdutorEstado(), pedido.getCompra().getTipoAtividadeCompra());
+                pedido.getVenda().getEstadoCliente(), pedido.getCompra().getTipoAtividadeCompra());
         // SOJA - CALCULA TAXA DE DEBITO
         if (pedido.getProduto().equals("SOJA")) {
             debitoIcms = this.debitoIcmsSoja(pedido.getCompra().getProdutorEstado(),
@@ -22,7 +22,7 @@ public class IcmsVendaService {
         // MILHO - CALCULA TAXA DE DEBITO
         if (pedido.getProduto().equals("MILHO")) {
             debitoIcms = this.debitoIcmsMilho(pedido.getCompra().getProdutorEstado(),
-                    pedido.getCliente().getRegiao(), pedido.getVenda().getEstadoCliente(),
+                    pedido.getVenda().getEstadoCliente(), pedido.getVenda().getEstadoCliente(),
                     pedido.getVenda().getTipoAtividadeVenda());
         }
 
@@ -56,7 +56,7 @@ public class IcmsVendaService {
         }
 
         // GO - SUL/SUDESTE ( PR, RS, RJ, SC OU SP) > OUTROS
-        if (estadoFilial.equals("GO") && estadoCliente.equals("SUL")
+        if (estadoFilial.equals("GO") && isRegiaoSul(estadoCliente)
                 && atividadeVenda.equals(TipoAtividadeVenda.OUTROS)) {
             valorCalculo = 0.12;
         }
@@ -77,7 +77,7 @@ public class IcmsVendaService {
         }
 
         // GO - SUL/SUDESTE ( PR, RS, RJ, SC OU SP) > IND.RAC/PROD/GRANJA
-        if (estadoFilial.equals("GO") && estadoCliente.equals("SUL")
+        if (estadoFilial.equals("GO") && isRegiaoSul(estadoCliente)
                 && (atividadeVenda.equals(TipoAtividadeVenda.PROD) || atividadeVenda.equals(TipoAtividadeVenda.RACOES)
                 || atividadeVenda.equals(TipoAtividadeVenda.GRANJA))) {
             valorCalculo = 0.084;
@@ -97,7 +97,7 @@ public class IcmsVendaService {
         }
 
         // GO - SUL/SUDESTE ( PR, RS, RJ, SC OU SP) > CONSUMO HUMANO
-        if (estadoFilial.equals("GO") && estadoCliente.equals("SUL")
+        if (estadoFilial.equals("GO") && isRegiaoSul(estadoCliente)
                 && atividadeVenda.equals(TipoAtividadeVenda.HUMANO)) {
             valorCalculo = 0.12;
         }
@@ -137,13 +137,13 @@ public class IcmsVendaService {
         }
 
         // MG - SUL/SUDESTE ( PR, RS, RJ, SC OU SP) > OUTROS
-        if (estadoFilial.equals("MG") && estadoCliente.equals("SUL")
+        if (estadoFilial.equals("MG") && isRegiaoSul(estadoCliente)
                 && atividadeVenda.equals(TipoAtividadeVenda.OUTROS)) {
             valorCalculo = 0.12;
         }
 
         // MG - SUL/SUDESTE ( PR, RS, RJ, SC OU SP) > IND.RAC/PROD/GRANJA
-        if (estadoFilial.equals("MG") && estadoCliente.equals("SUL")
+        if (estadoFilial.equals("MG") && isRegiaoSul(estadoCliente)
                 && (atividadeVenda.equals(TipoAtividadeVenda.PROD) || atividadeVenda.equals(TipoAtividadeVenda.RACOES)
                 || atividadeVenda.equals(TipoAtividadeVenda.GRANJA))) {
             valorCalculo = 0.084;
@@ -163,7 +163,7 @@ public class IcmsVendaService {
         }
 
         // MG - SUL/SUDESTE ( PR, RS, RJ, SC OU SP) > CONSUMO HUMANO
-        if (estadoFilial.equals("MG") && estadoCliente.equals("SUL")
+        if (estadoFilial.equals("MG") && isRegiaoSul(estadoCliente)
                 && atividadeVenda.equals(TipoAtividadeVenda.HUMANO)) {
             valorCalculo = 0.12;
         }
@@ -227,7 +227,7 @@ public class IcmsVendaService {
         }
 
         // GO - SUL/SUDESTE ( PR, RS, RJ, SC OU SP) CONSUMO HUMANO
-        if (estadoFilial.equals("GO") && estadoCliente.equals("SUL")
+        if (estadoFilial.equals("GO") && isRegiaoSul(estadoCliente)
                 && atividadeVenda.equals(TipoAtividadeVenda.HUMANO)) {
             valorCalculo = 0.12;
         }
@@ -236,7 +236,7 @@ public class IcmsVendaService {
         // (COMPRA DO
         // DF)
         if (estadoSaidaMaterial.equals("DF") && estadoFilial.equals("GO")
-                && estadoCliente.equals("SUL")
+                && isRegiaoSul(estadoCliente)
                 && (atividadeVenda.equals(TipoAtividadeVenda.PROD) || atividadeVenda.equals(TipoAtividadeVenda.RACOES)
                 || atividadeVenda.equals(TipoAtividadeVenda.GRANJA))) {
             valorCalculo = 0.084;
@@ -246,14 +246,14 @@ public class IcmsVendaService {
         // (COMPRA DO
         // GO COM CR�DITO OUTORGADO)
         if (estadoSaidaMaterial.equals("GO") && estadoFilial.equals("GO")
-                && estadoCliente.equals("SUL")
+                && isRegiaoSul(estadoCliente)
                 && (atividadeVenda.equals(TipoAtividadeVenda.PROD) || atividadeVenda.equals(TipoAtividadeVenda.RACOES)
                 || atividadeVenda.equals(TipoAtividadeVenda.GRANJA))) {
             valorCalculo = ((0.084 - 0.0343) + ((0.084 - 0.0343) * 0.15));
         }
 
         // GO - SUL/SUDESTE ( PR, RS, RJ, SC OU SP) OUTROS
-        if (estadoFilial.equals("GO") && estadoCliente.equals("SUL")
+        if (estadoFilial.equals("GO") && isRegiaoSul(estadoCliente)
                 && atividadeVenda.equals(TipoAtividadeVenda.OUTROS)) {
             valorCalculo = 0.12;
         }
@@ -305,19 +305,19 @@ public class IcmsVendaService {
         }
 
         // MG - SUL/SUDESTE ( PR, RS, RJ, SC OU SP) CONSUMO HUMANO
-        if (estadoFilial.equals("MG") && estadoCliente.equals("SUL")
+        if (estadoFilial.equals("MG") && isRegiaoSul(estadoCliente)
                 && atividadeVenda.equals(TipoAtividadeVenda.HUMANO)) {
             valorCalculo = 0.12;
         }
 
         // MG - SUL/SUDESTE ( PR, RS, RJ, SC OU SP) OUTROS
-        if (estadoFilial.equals("MG") && estadoCliente.equals("SUL")
+        if (estadoFilial.equals("MG") && isRegiaoSul(estadoCliente)
                 && atividadeVenda.equals(TipoAtividadeVenda.OUTROS)) {
             valorCalculo = 0.12;
         }
 
         // MG - SUL/SUDESTE ( PR, RS, RJ, SC OU SP) IND.RAC/PROD/GRANJA
-        if (estadoFilial.equals("MG") && estadoCliente.equals("SUL")
+        if (estadoFilial.equals("MG") && isRegiaoSul(estadoCliente)
                 && (atividadeVenda.equals(TipoAtividadeVenda.PROD) || atividadeVenda.equals(TipoAtividadeVenda.RACOES)
                 || atividadeVenda.equals(TipoAtividadeVenda.GRANJA))) {
             valorCalculo = 0.084;
@@ -358,5 +358,10 @@ public class IcmsVendaService {
             valorCalculo = 0.18;
         }
         return valorCalculo;
+    }
+
+    private boolean isRegiaoSul(String estado) {
+        return estado.equals("PR") || estado.equals("RS") || estado.equals("RJ") ||
+                estado.equals("SC") || estado.equals("SP");
     }
 }
