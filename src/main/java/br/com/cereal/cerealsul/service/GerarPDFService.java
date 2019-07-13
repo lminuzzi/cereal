@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.format.DateTimeFormatter;
@@ -26,9 +27,10 @@ public class GerarPDFService {
     //private static final String BASE_OUTPUT_PROD = "webapps/cerealsulapp/WEB-INF/classes/static/output/";
     private static final String BASE_INPUT_PROD = "webapps/cerealsulapp/WEB-INF/classes/static/pdftemplates/";
     private static final String BASE_OUTPUT_PROD = "/home/lucianominuzzi/webapps/ROOT/cerealsul/PDF/";
-    //private static final String BASE_INPUT = "src/main/resources/static/pdftemplates/";
-    //private static final String BASE_OUTPUT = "src/main/resources/static/output/";
+    //private static final String BASE_INPUT_PROD = "src/main/resources/static/pdftemplates/";
+    //private static final String BASE_OUTPUT_PROD = "src/main/resources/static/output/";
     private static final String BASE_OUTPUT_PDF = "/home/lucianominuzzi/webapps/ROOT/cerealsul/PDF/";
+    //private static final String BASE_OUTPUT_PDF = "src/main/resources/static/output/";
     private static final String PATH_INPUT = BASE_INPUT_PROD + "pedido.html";
     private static final String PATH_OUTPUT = BASE_OUTPUT_PROD + "htmlPedido_";
     private static final String PATH_INPUT_CONTRATO = BASE_INPUT_PROD + "Contrato_pedido.html";
@@ -68,7 +70,7 @@ public class GerarPDFService {
         PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(new File(pathOutput)));
         document.open();
         XMLWorkerHelper.getInstance().parseXHtml(writer, document,
-                new FileInputStream(pathInput));
+                new FileInputStream(pathInput), Charset.forName("UTF-8"));
         document.close();
     }
 
@@ -266,17 +268,20 @@ public class GerarPDFService {
     private static String getVendedorDetalhes(Cliente cliente) {
         String cpfCnpj = cliente.getCpf() != null && !cliente.getCpf().equals("") ?
                 cliente.getCpf() : cliente.getCnpj();
-        return cliente.getNomeCliente() + ", situada no município de " + cliente.getLocal() + " estado de " +
-                cliente.getRegiao() + ", na " + cliente.getRua() + ", Bairro " + cliente.getBairro() +
-                ", inscrito no CPF/CNPJ Nº. " + cpfCnpj + " e Inscrição Estadual Nº. " + cliente.getInscEst();
+        return "<b>" + cliente.getNomeCliente().toUpperCase() + "</b>, situada no município de <b>" +
+                cliente.getLocal().toUpperCase() + "</b> estado de <b>" + cliente.getRegiao().toUpperCase() +
+                "</b>, na " + cliente.getRua() + ", Bairro " + cliente.getBairro() + ", inscrito no CPF/CNPJ Nº. <b>" +
+                cpfCnpj + "</b> e Inscrição Estadual Nº. <b>" + cliente.getInscEst() + "</b>";
     }
 
     private static String getCompradorDetalhes(Fornecedor fornecedor) {
         String cpfCnpj = fornecedor.getCpf() != null && !fornecedor.getCpf().equals("") ?
                 fornecedor.getCpf() : fornecedor.getCnpj();
-        return fornecedor.getNomeFornecedor() + ", com sede no Município de " + fornecedor.getLocal() + ", estado de " +
-                fornecedor.getRegiao() + ", na " + fornecedor.getRua() + ", Bairro " + fornecedor.getBairro() +
-                "inscrito no CPF/CNPJ Nº.: " + cpfCnpj + " e Inscrição Estadual N°.: " + fornecedor.getInscEst();
+        return "<b>" + fornecedor.getNomeFornecedor().toUpperCase() + "</b>, com sede no Município de <b>" +
+                fornecedor.getLocal().toUpperCase() + "</b>, estado de <b>" + fornecedor.getRegiao().toUpperCase() +
+                "</b>, na " + fornecedor.getRua() + ", Bairro " + fornecedor.getBairro() +
+                " inscrito no CPF/CNPJ Nº.: <b>" + cpfCnpj + "</b> e Inscrição Estadual N°.: <b>" +
+                fornecedor.getInscEst() + "</b>";
     }
 
     public static String getPathOutputContrato(long nrSiscdb) {
