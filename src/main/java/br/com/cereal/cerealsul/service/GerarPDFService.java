@@ -23,8 +23,6 @@ import java.util.stream.Stream;
 
 @Service("GerarPDFService")
 public class GerarPDFService {
-    //private static final String BASE_INPUT_PROD = "webapps/cerealsulapp/WEB-INF/classes/static/pdftemplates/";
-    //private static final String BASE_OUTPUT_PROD = "webapps/cerealsulapp/WEB-INF/classes/static/output/";
     private static final String BASE_INPUT_PROD = "webapps/cerealsulapp/WEB-INF/classes/static/pdftemplates/";
     private static final String BASE_OUTPUT_PROD = "/home/lucianominuzzi/webapps/ROOT/cerealsul/PDF/";
     //private static final String BASE_INPUT_PROD = "src/main/resources/static/pdftemplates/";
@@ -144,7 +142,9 @@ public class GerarPDFService {
         mapa.put("COMPRA_FRETE", "R$ " + (pedidoDetalhe.getCompraPossuiFrete() ? compra.getCompraFrete().toString() : 0));
         mapa.put("COMPRA_CORRETAGEM", "R$ " + (pedidoDetalhe.getCompraPossuiCorretor() ?
                 compra.getCompraCorret().toString() : 0));
-        mapa.put("COMPRA_CUSTO_TOTAL", "R$ " + compra.getCompraCustoTotal().toString());
+        mapa.put("COMPRA_CUSTO_TOTAL", "R$ " + TransformaReaisService.transformar(pedido.getValorLiq() +
+                compra.getValorFunRural() + pedidoDetalhe.getValorIcmsProdutor() +
+                compra.getCompraFrete() + compra.getCompraCorret()));
         mapa.put("VENDA_IMPOSTOS", "R$ " + pedidoDetalhe.getVendaValorIcms().toString());
         mapa.put("VENDA_FRETE", "R$ " + (pedidoDetalhe.getVendaPossuiFrete() ? venda.getVendaFrete().toString() : 0));
         mapa.put("VENDA_CORRETAGEM", "R$ " + (pedidoDetalhe.getVendaPossuiCorretor() ?
@@ -152,30 +152,32 @@ public class GerarPDFService {
         mapa.put("VENDA_CUSTO_FINAL", "R$ " + venda.getVendaCustoTotal().toString());
         mapa.put("VENDA_VALOR", "R$ " + pedidoDetalhe.getValorVenda().toString());
         mapa.put("VENDA_MARGEM", pedido.getMargem().toString());
-        mapa.put("TOTAL_IMPOSTOS_VENDA", "R$ " + venda.getVendaImpostosTotal().toString());
-        mapa.put("TOTAL_FRETE", "R$ " + venda.getVendaFreteTotal().toString());
-        mapa.put("TOTAL_CORRETAGEM", "R$ " + venda.getVendaCorretTotal().toString());
-        mapa.put("TOTAL_CUSTO_FINAL", "R$ " + venda.getVendaCusto().toString());
+        mapa.put("TOTAL_IMPOSTOS", "R$ " + TransformaReaisService.transformar(
+                (pedidoDetalhe.getValorIcmsProdutor() + venda.getVendaValorIcms()) * pedido.getQtSacos()));
+        mapa.put("TOTAL_FRETE", "R$ " + TransformaReaisService.transformar(
+                (venda.getVendaFrete() + compra.getCompraFrete()) * pedido.getQtSacos()));
+        mapa.put("TOTAL_CORRETAGEM", "R$ " + TransformaReaisService.transformar(
+                (venda.getVendaCorret() + compra.getCompraCorret() * pedido.getQtSacos())));
+        mapa.put("TOTAL_CUSTO_FINAL", "R$ " + TransformaReaisService.transformar(
+                venda.getVendaCustoTotal() * pedido.getQtSacos()));
         mapa.put("TOTAL_VALOR_VENDA_FINAL", "R$ " + venda.getVendaValorRealTotal().toString());
-        mapa.put("TOTAL_MARGEM_BRUTA_TOTAL", pedido.getMargemTotal().toString());
-        mapa.put("PAG_FOR_VALOR_TOTAL_LIQ", "R$ " + pedido.getValorLiq().toString());
-        mapa.put("PAG_FOR_TODOS_IMPOSTOS", "R$ " + pedido.getFunruralTotal().toString());
-        mapa.put("PAG_FOR_IMPOSTOS_COMPRA", "R$ " + compra.getValorIcmsProdutor().toString());
-        mapa.put("PAG_FOR_FRETE", "R$ " + (pedidoDetalhe.getCompraPossuiFrete() ? compra.getCompraFrete().toString() : 0));
+        mapa.put("TOTAL_MARGEM_BRUTA_TOTAL", String.valueOf(TransformaReaisService.transformar(
+                pedido.getMargem() * pedido.getQtSacos())));
+        mapa.put("PAG_FOR_VALOR_TOTAL_LIQ", "R$ " + TransformaReaisService.transformar(
+                pedido.getValorLiq() * pedido.getQtSacos()));
+        mapa.put("PAG_FOR_TODOS_IMPOSTOS", "R$ " + TransformaReaisService.transformar(
+                pedido.getFunrural() * pedido.getQtSacos()));
+        mapa.put("PAG_FOR_IMPOSTOS_COMPRA", "R$ " + TransformaReaisService.transformar(
+                compra.getValorIcmsProdutor() * pedido.getQtSacos()));
+        mapa.put("PAG_FOR_FRETE", "R$ " + (pedidoDetalhe.getCompraPossuiFrete() ? TransformaReaisService.transformar(
+                compra.getCompraFrete() * pedido.getQtSacos()) : 0));
         mapa.put("PAG_FOR_CORRETAGEM", "R$ " + (pedidoDetalhe.getCompraPossuiCorretor() ?
-                compra.getCompraCorret().toString() : 0));
-        mapa.put("PAG_FOR_CUSTO_TOTAL_COMPRA", "R$ " + compra.getCompraCustoTotal().toString());
-        mapa.put("PAG_FOR_CUSTO_POR_SACO", "R$ " + TransformaReaisService.transformar(
-                compra.getCompraCusto() / pedido.getQtSacos()));
+                TransformaReaisService.transformar(compra.getCompraCorret() * pedido.getQtSacos()) : 0));
+        mapa.put("PAG_FOR_CUSTO_TOTAL_COMPRA", "R$ " + TransformaReaisService.transformar(
+                compra.getCompraCustoTotal() * pedido.getQtSacos()));
+        mapa.put("PAG_FOR_CUSTO_POR_SACO", "R$ " + TransformaReaisService.transformar(compra.getCompraCustoTotal()));
         mapa.put("PAG_FOR_CUSTO_POR_KG", "R$ " + TransformaReaisService.transformar(
-                compra.getCompraCusto() / pedido.getPeso()));
-        mapa.put("SAP_JUROS_TOTAL_COM_JUROS", "R$ 0,00");
-        mapa.put("SAP_JUROS_VALOR_POR_SACO", "R$ 0,00");
-        mapa.put("SAP_JUROS_DIAS_JUROS", pedido.getDiasDeJuros());
-        mapa.put("SAP_JUROS_JUROS_POR_SACO", "R$ 0,00");
-        mapa.put("SAP_JUROS_JUROS_TOTAL", "R$ 0,00");
-        mapa.put("SAP_JUROS_DATA_PONDERADA_VENDA", venda.getVendaDataPagamento().format(DATE_TIME_FORMATTER));
-        mapa.put("SAP_JUROS_PAGA_JUROS_PRODUTOR", "NÃO");
+                compra.getCompraCustoTotal() / 60));
         mapa.put("INF_FIN_A_PAGAR_DATA", pedidoDetalhe.getCompraDataPagamento().format(DATE_TIME_FORMATTER));
         mapa.put("INF_FIN_A_PAGAR_VALOR", compra.getCompraCustoTotal().toString());
         mapa.put("INF_FIN_A_PAGAR_VALOR_TOTAL", compra.getCompraCustoTotal().toString());
@@ -191,9 +193,9 @@ public class GerarPDFService {
     private static String getDescricaoDadosBancarios(PedidoDadoBancario pedidoDadoBancario) {
         return " CPF: " + pedidoDadoBancario.getCpfBanco() +
                 " BCO: " + pedidoDadoBancario.getNomeBanco() +
-                " AG: " + pedidoDadoBancario.getAgenciaBanco() +
+                " <br/>AG: " + pedidoDadoBancario.getAgenciaBanco() +
                 " CC: " + pedidoDadoBancario.getContaBanco() +
-                " TITULAR: " + pedidoDadoBancario.getTitularBanco();
+                " <br/>TITULAR: " + pedidoDadoBancario.getTitularBanco();
     }
 
     public static void gerarPDFContrato(Pedido pedido) {

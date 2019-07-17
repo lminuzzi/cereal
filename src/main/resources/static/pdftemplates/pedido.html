@@ -4,6 +4,12 @@
 <head>
     <title>Cereal Sul</title>
     <meta charset="UTF-8"/>
+    <style>
+        body {
+            font-family: Times, serif;
+            font-size: 8px;
+        }
+    </style>
 </head>
 
 <body>
@@ -138,32 +144,32 @@
                             <tr>
                                 <td align="center">
                                     <div><h3>Compra</h3></div>
-                                    <div>Valor Líq.: R$ *****COMPRA_VALOR_LIQUIDO*****</div>
-                                    <div>Funrural: R$ *****COMPRA_FUNRURAL*****</div>
-                                    <div>Impostos: R$ *****COMPRA_IMPOSTOS*****</div>
-                                    <div>Frete: R$ *****COMPRA_FRETE*****</div>
-                                    <div>Corretagem: R$ *****COMPRA_CORRETAGEM*****</div>
-                                    <div>Custo Tot.: R$ *****COMPRA_CUSTO_TOTAL*****</div>
+                                    <div>Valor Líq.: *****COMPRA_VALOR_LIQUIDO*****</div>
+                                    <div>Funrural: *****COMPRA_FUNRURAL*****</div>
+                                    <div>Impostos: *****COMPRA_IMPOSTOS*****</div>
+                                    <div>Frete: *****COMPRA_FRETE*****</div>
+                                    <div>Corretagem: *****COMPRA_CORRETAGEM*****</div>
+                                    <div>Custo Tot.: *****COMPRA_CUSTO_TOTAL*****</div>
                                 </td>
                                 <td align="center">
                                     <div><h3>Venda</h3></div>
-                                    <div>Impostos de Venda: R$ *****VENDA_IMPOSTOS*****</div>
-                                    <div>Frete: R$ *****VENDA_FRETE*****</div>
-                                    <div>Corretagem: R$ *****VENDA_CORRETAGEM*****</div>
-                                    <div>Custo Final.: R$ *****VENDA_CUSTO_FINAL*****</div>
-                                    <div>Valor Venda: R$ *****VENDA_VALOR*****</div>
-                                    <div>Margem: R$ *****VENDA_MARGEM*****</div>
+                                    <div>Impostos de Venda: *****VENDA_IMPOSTOS*****</div>
+                                    <div>Frete: *****VENDA_FRETE*****</div>
+                                    <div>Corretagem: *****VENDA_CORRETAGEM*****</div>
+                                    <div>Custo Final.: *****VENDA_CUSTO_FINAL*****</div>
+                                    <div>Valor Venda: *****VENDA_VALOR*****</div>
+                                    <div>Margem: *****VENDA_MARGEM***** %</div>
                                 </td>
                             </tr>
                         </table>
                     </td>
                     <td align="right" width="50%">
-                        <div>Impostos de Venda: R$ *****TOTAL_IMPOSTOS_VENDA*****</div>
-                        <div>Frete: R$ *****TOTAL_FRETE*****</div>
-                        <div>Corretagem: R$ *****TOTAL_CORRETAGEM*****</div>
-                        <div>Custo Final: R$ *****TOTAL_CUSTO_FINAL*****</div>
-                        <div>Valor de Venda Final: R$ *****TOTAL_VALOR_VENDA_FINAL*****</div>
-                        <div>**Margem Bruta Total: R$ *****TOTAL_MARGEM_BRUTA_TOTAL*****</div>
+                        <div>Impostos: *****TOTAL_IMPOSTOS*****</div>
+                        <div>Frete: *****TOTAL_FRETE*****</div>
+                        <div>Corretagem: *****TOTAL_CORRETAGEM*****</div>
+                        <div>Custo Final: *****TOTAL_CUSTO_FINAL*****</div>
+                        <div>Valor de Venda Final: *****TOTAL_VALOR_VENDA_FINAL*****</div>
+                        <div>**Margem Bruta Total: *****TOTAL_MARGEM_BRUTA_TOTAL***** %</div>
                     </td>
                 </tr>
             </table>
@@ -173,31 +179,21 @@
         <td colspan="3">
             <table width="100%">
                 <tr>
-                    <td colspan="2"><h2>LANÇAMENTO SAP</h2></td>
+                    <td><h2>LANÇAMENTO SAP</h2></td>
                 </tr>
                 <tr>
-                    <td width="50%"><h3>PAGAMENTO FORNECEDOR</h3></td>
-                    <td width="50%"><h3>JÚROS</h3></td>
+                    <td><h3>PAGAMENTO FORNECEDOR</h3></td>
                 </tr>
                 <tr>
-                    <td width="50%">
-                        <div>Valor Total Líq. da Compra (Dia 0): R$ *****PAG_FOR_VALOR_TOTAL_LIQ*****</div>
-                        <div>Funrural + PAT + SENAR: R$ *****PAG_FOR_TODOS_IMPOSTOS*****</div>
-                        <div>Impostos de Compra: R$ *****PAG_FOR_IMPOSTOS_COMPRA*****</div>
-                        <div>Frete: R$ *****PAG_FOR_FRETE*****</div>
-                        <div>Corretagem: R$ *****PAG_FOR_CORRETAGEM*****</div>
-                        <div>Custo Total de Compra: R$ *****PAG_FOR_CUSTO_TOTAL_COMPRA*****</div>
-                        <div>Valor de Custo por Saco: R$ *****PAG_FOR_CUSTO_POR_SACO*****</div>
-                        <div>Valor de Custo por KG: R$ *****PAG_FOR_CUSTO_POR_KG*****</div>
-                    </td>
-                    <td width="50%">
-                        <div>Total com Júros: R$ *****SAP_JUROS_TOTAL_COM_JUROS*****</div>
-                        <div>Valor por Saco com Júros: R$ *****SAP_JUROS_VALOR_POR_SACO*****</div>
-                        <div>Dias de Júros: R$ *****SAP_JUROS_DIAS_JUROS*****</div>
-                        <div>Júros por Saco: R$ *****SAP_JUROS_JUROS_POR_SACO*****</div>
-                        <div>Júros Total: R$ *****SAP_JUROS_JUROS_TOTAL*****</div>
-                        <div>Data Ponderada de Venda: R$ *****SAP_JUROS_DATA_PONDERADA_VENDA*****</div>
-                        <div>Paga Júros a Produtor: R$ *****SAP_JUROS_PAGA_JUROS_PRODUTOR*****</div>
+                    <td>
+                        <div>Valor Total Líq. da Compra (Dia 0): *****PAG_FOR_VALOR_TOTAL_LIQ*****</div>
+                        <div>Funrural + PAT + SENAR: *****PAG_FOR_TODOS_IMPOSTOS*****</div>
+                        <div>Impostos de Compra: *****PAG_FOR_IMPOSTOS_COMPRA*****</div>
+                        <div>Frete: *****PAG_FOR_FRETE*****</div>
+                        <div>Corretagem: *****PAG_FOR_CORRETAGEM*****</div>
+                        <div>Custo Total de Compra: *****PAG_FOR_CUSTO_TOTAL_COMPRA*****</div>
+                        <div>Valor de Custo por Saco: *****PAG_FOR_CUSTO_POR_SACO*****</div>
+                        <div>Valor de Custo por KG: *****PAG_FOR_CUSTO_POR_KG*****</div>
                     </td>
                 </tr>
             </table>
@@ -221,34 +217,9 @@
                     <td width="50%">
                         <table width="100%">
                             <tr>
-                                <td width="40%" align="center">Parcela Produtor (1)</td>
+                                <td width="40%" align="center">Parcela Produtor</td>
                                 <td width="30%" align="center">*****INF_FIN_A_PAGAR_DATA*****</td>
                                 <td width="30%" align="center">*****INF_FIN_A_PAGAR_VALOR*****</td>
-                            </tr>
-                            <tr>
-                                <td width="40%" align="center">Parcela Produtor (2)</td>
-                                <td width="30%" align="center">-</td>
-                                <td width="30%" align="center">-</td>
-                            </tr>
-                            <tr>
-                                <td width="40%" align="center">Parcela Produtor (3)</td>
-                                <td width="30%" align="center">-</td>
-                                <td width="30%" align="center">-</td>
-                            </tr>
-                            <tr>
-                                <td width="40%" align="center">Parcela Produtor (4)</td>
-                                <td width="30%" align="center">-</td>
-                                <td width="30%" align="center">-</td>
-                            </tr>
-                            <tr>
-                                <td width="40%" align="center">Parcela Produtor (5)</td>
-                                <td width="30%" align="center">-</td>
-                                <td width="30%" align="center">-</td>
-                            </tr>
-                            <tr>
-                                <td width="40%" align="center">Parcela Produtor (6)</td>
-                                <td width="30%" align="center">-</td>
-                                <td width="30%" align="center">-</td>
                             </tr>
                             <tr>
                                 <td width="40%" align="center">Total</td>
@@ -260,34 +231,9 @@
                     <td width="50%">
                         <table width="100%">
                             <tr>
-                                <td width="40%" align="center">Parcela Trading (1)</td>
+                                <td width="40%" align="center">Parcela Trading</td>
                                 <td width="30%" align="center">*****INF_FIN_A_RECEBER_DATA*****</td>
                                 <td width="30%" align="center">*****INF_FIN_A_RECEBER_VALOR*****</td>
-                            </tr>
-                            <tr>
-                                <td width="40%" align="center">Parcela Trading (2)</td>
-                                <td width="30%" align="center">-</td>
-                                <td width="30%" align="center">-</td>
-                            </tr>
-                            <tr>
-                                <td width="40%" align="center">Parcela Trading (3)</td>
-                                <td width="30%" align="center">-</td>
-                                <td width="30%" align="center">-</td>
-                            </tr>
-                            <tr>
-                                <td width="40%" align="center">Parcela Trading (4)</td>
-                                <td width="30%" align="center">-</td>
-                                <td width="30%" align="center">-</td>
-                            </tr>
-                            <tr>
-                                <td width="40%" align="center">Parcela Trading (5)</td>
-                                <td width="30%" align="center">-</td>
-                                <td width="30%" align="center">-</td>
-                            </tr>
-                            <tr>
-                                <td width="40%" align="center">Parcela Trading (6)</td>
-                                <td width="30%" align="center">-</td>
-                                <td width="30%" align="center">-</td>
                             </tr>
                             <tr>
                                 <td width="40%" align="center">Total</td>
@@ -302,7 +248,7 @@
     </tr>
     <tr>
         <td colspan="3">
-            <div><span style="">Margem Bruta (Ainda à dedusir os custos operacionais da empresa como por exemplo: Salários de colaboradores, Contas Fixas e Impostos)</span></div>
+            <div><span style="">Margem Bruta (Ainda à dedusir os custos operacionais da empresa como por exemplo: Salários de colaboradores, Contas Fixas e Impostos)</span></div><br/><br/><br/><br/>
             <div style="width: 100%; text-align: center;">__________________________________________________________________</div>
             <div style="width: 100%; text-align: center;">*****ASSINATURA_PEDIDO*****</div>
             <div style="width: 100%;">
@@ -314,48 +260,15 @@
     </tr>
 </table>
 <!--
-<h1>A very simple webpage. This is an "h1" level header.</h1>
-
-<h2>This is a level h2 header.</h2>
-
-<h6>This is a level h6 header.  Pretty small!</h6>
-
-<p>This is a standard paragraph.</p>
-
-<p align=center>Now I've aligned it in the center of the screen.</p>
-
-<p align=right>Now aligned to the right</p>
-
 <p><b>Bold text</b></p>
 
 <p><strong>Strongly emphasized text</strong>  Can you tell the difference vs. bold?</p>
 
-<p><i>Italics</i></p>
-
 <p><em>Emphasized text</em>  Just like Italics!</p>
-
-<h2>How about a nice ordered list!</h2>
-<ol>
-  <li>This little piggy went to market</li>
-  <li>This little piggy went to SB228 class</li>
-  <li>This little piggy went to an expensive restaurant in Downtown Palo Alto</li>
-  <li>This little piggy ate too much at Indian Buffet.</li>
-  <li>This little piggy got lost</li>
-</ol>
-
-<h2>Unordered list</h2>
-<ul>
-  <li>First element</li>
-  <li>Second element</li>
-  <li>Third element</li>
-</ul>
-
 
 <p>And finally, how about some</p><a href="http://www.google.com/">Links?</a>
 
 <p>Remember, you can view the HTMl code from this or any other page by using the "View Page Source" command of your browser.</p>
 -->
 </body>
-
 </html>
-
