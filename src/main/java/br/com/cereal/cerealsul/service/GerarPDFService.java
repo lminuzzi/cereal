@@ -139,27 +139,42 @@ public class GerarPDFService {
         mapa.put("COMPRA_VALOR_LIQUIDO", "R$ " + pedido.getValorLiq().toString());
         mapa.put("COMPRA_FUNRURAL", "R$ " + compra.getValorFunRural().toString());
         mapa.put("COMPRA_IMPOSTOS", "R$ " + pedidoDetalhe.getValorIcmsProdutor().toString());
-        mapa.put("COMPRA_FRETE", "R$ " + (pedidoDetalhe.getCompraPossuiFrete() ? compra.getCompraFrete().toString() : 0));
-        mapa.put("COMPRA_CORRETAGEM", "R$ " + (pedidoDetalhe.getCompraPossuiCorretor() ?
-                compra.getCompraCorret().toString() : 0));
-        mapa.put("COMPRA_CUSTO_TOTAL", "R$ " + TransformaReaisService.transformar(pedido.getValorLiq() +
-                compra.getValorFunRural() + pedidoDetalhe.getValorIcmsProdutor() +
-                compra.getCompraFrete() + compra.getCompraCorret()));
+        Double compraFrete = (double) 0;
+        if(pedidoDetalhe.getCompraPossuiFrete()) {
+            compraFrete = compra.getCompraFrete();
+        }
+        Double compraCorret = (double) 0;
+        if(pedidoDetalhe.getCompraPossuiCorretor()) {
+            compraCorret = compra.getCompraCorret();
+        }
+        mapa.put("COMPRA_FRETE", "R$ " + compraFrete);
+        mapa.put("COMPRA_CORRETAGEM", "R$ " + compraCorret);
+        Double compraCustoTotal = TransformaReaisService.transformar(pedido.getValorLiq() +
+                compra.getValorFunRural() + pedidoDetalhe.getValorIcmsProdutor() + compraFrete + compraCorret);
+        mapa.put("COMPRA_CUSTO_TOTAL", "R$ " + compraCustoTotal);
         mapa.put("VENDA_IMPOSTOS", "R$ " + pedidoDetalhe.getVendaValorIcms().toString());
-        mapa.put("VENDA_FRETE", "R$ " + (pedidoDetalhe.getVendaPossuiFrete() ? venda.getVendaFrete().toString() : 0));
-        mapa.put("VENDA_CORRETAGEM", "R$ " + (pedidoDetalhe.getVendaPossuiCorretor() ?
-                venda.getVendaCorret().toString() : 0));
-        mapa.put("VENDA_CUSTO_FINAL", "R$ " + venda.getVendaCustoTotal().toString());
+        Double vendaFrete = (double) 0;
+        if(pedidoDetalhe.getVendaPossuiFrete()) {
+            vendaFrete = venda.getVendaFrete();
+        }
+        Double vendaCorret = (double) 0;
+        if(pedidoDetalhe.getVendaPossuiCorretor()) {
+            vendaCorret = venda.getVendaCorret();
+        }
+        mapa.put("VENDA_FRETE", "R$ " + vendaFrete);
+        mapa.put("VENDA_CORRETAGEM", "R$ " + vendaCorret);
+        Double vendaCustoFinal = compraCustoTotal + vendaFrete + vendaCorret;
+        mapa.put("VENDA_CUSTO_FINAL", "R$ " + vendaCustoFinal);
         mapa.put("VENDA_VALOR", "R$ " + pedidoDetalhe.getValorVenda().toString());
         mapa.put("VENDA_MARGEM", pedido.getMargem().toString());
         mapa.put("TOTAL_IMPOSTOS", "R$ " + TransformaReaisService.transformar(
                 (pedidoDetalhe.getValorIcmsProdutor() + venda.getVendaValorIcms()) * pedido.getQtSacos()));
         mapa.put("TOTAL_FRETE", "R$ " + TransformaReaisService.transformar(
-                (venda.getVendaFrete() + compra.getCompraFrete()) * pedido.getQtSacos()));
+                (vendaFrete + compraFrete) * pedido.getQtSacos()));
         mapa.put("TOTAL_CORRETAGEM", "R$ " + TransformaReaisService.transformar(
-                (venda.getVendaCorret() + compra.getCompraCorret() * pedido.getQtSacos())));
+                (vendaCorret + compraCorret * pedido.getQtSacos())));
         mapa.put("TOTAL_CUSTO_FINAL", "R$ " + TransformaReaisService.transformar(
-                venda.getVendaCustoTotal() * pedido.getQtSacos()));
+                vendaCustoFinal * pedido.getQtSacos()));
         mapa.put("TOTAL_VALOR_VENDA_FINAL", "R$ " + venda.getVendaValorRealTotal().toString());
         mapa.put("TOTAL_MARGEM_BRUTA_TOTAL", String.valueOf(TransformaReaisService.transformar(
                 pedido.getMargem() * pedido.getQtSacos())));
@@ -172,12 +187,11 @@ public class GerarPDFService {
         mapa.put("PAG_FOR_FRETE", "R$ " + (pedidoDetalhe.getCompraPossuiFrete() ? TransformaReaisService.transformar(
                 compra.getCompraFrete() * pedido.getQtSacos()) : 0));
         mapa.put("PAG_FOR_CORRETAGEM", "R$ " + (pedidoDetalhe.getCompraPossuiCorretor() ?
-                TransformaReaisService.transformar(compra.getCompraCorret() * pedido.getQtSacos()) : 0));
+                TransformaReaisService.transformar(compraCorret * pedido.getQtSacos()) : 0));
         mapa.put("PAG_FOR_CUSTO_TOTAL_COMPRA", "R$ " + TransformaReaisService.transformar(
-                compra.getCompraCustoTotal() * pedido.getQtSacos()));
-        mapa.put("PAG_FOR_CUSTO_POR_SACO", "R$ " + TransformaReaisService.transformar(compra.getCompraCustoTotal()));
-        mapa.put("PAG_FOR_CUSTO_POR_KG", "R$ " + TransformaReaisService.transformar(
-                compra.getCompraCustoTotal() / 60));
+                compraCustoTotal * pedido.getQtSacos()));
+        mapa.put("PAG_FOR_CUSTO_POR_SACO", "R$ " + compraCustoTotal);
+        mapa.put("PAG_FOR_CUSTO_POR_KG", "R$ " + TransformaReaisService.transformar(compraCustoTotal / 60));
         mapa.put("INF_FIN_A_PAGAR_DATA", pedidoDetalhe.getCompraDataPagamento().format(DATE_TIME_FORMATTER));
         mapa.put("INF_FIN_A_PAGAR_VALOR", compra.getCompraCustoTotal().toString());
         mapa.put("INF_FIN_A_PAGAR_VALOR_TOTAL", compra.getCompraCustoTotal().toString());
