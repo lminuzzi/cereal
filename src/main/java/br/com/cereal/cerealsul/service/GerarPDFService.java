@@ -141,7 +141,7 @@ public class GerarPDFService {
         mapa.put("COMPRA_IMPOSTOS", "R$ " + pedidoDetalhe.getValorIcmsProdutor().toString());
         Double compraFrete = (double) 0;
         if(pedidoDetalhe.getCompraPossuiFrete()) {
-            compraFrete = compra.getCompraFrete();
+            compraFrete = compra.getCompraFreteTotal();
         }
         Double compraCorret = (double) 0;
         if(pedidoDetalhe.getCompraPossuiCorretor()) {
@@ -155,7 +155,7 @@ public class GerarPDFService {
         mapa.put("VENDA_IMPOSTOS", "R$ " + pedidoDetalhe.getVendaValorIcms().toString());
         Double vendaFrete = (double) 0;
         if(pedidoDetalhe.getVendaPossuiFrete()) {
-            vendaFrete = venda.getVendaFrete();
+            vendaFrete = venda.getVendaFreteTotal();
         }
         Double vendaCorret = (double) 0;
         if(pedidoDetalhe.getVendaPossuiCorretor()) {
