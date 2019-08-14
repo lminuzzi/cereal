@@ -34,11 +34,22 @@ public class CerealsulConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        /*
         http
                 .csrf().disable()
                 .anonymous().disable()
                 .authorizeRequests()
                 .antMatchers("/api-docs/**").permitAll();
+        */
+        http
+                .csrf().disable()
+                .requestMatchers()
+                .antMatchers("/login", "/oauth/token")
+                .and()
+                .authorizeRequests()
+                .anyRequest().authenticated()
+                .and()
+                .formLogin().permitAll();
     }
 
     @Bean

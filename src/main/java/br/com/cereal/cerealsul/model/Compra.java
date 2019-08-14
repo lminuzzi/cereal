@@ -60,5 +60,6 @@ public class Compra implements Serializable {
     private String filialCompra;
     @Transient
     private LocalDate compraDataPagamento;
-
+    @Transient
+    private String compraObs;
 }

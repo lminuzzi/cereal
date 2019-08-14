@@ -1,0 +1,112 @@
+Melhorias :
+
+Revisão da Sessão
+- A sessão está caindo e não se mantém. Quando se loga no sistema e volta para a pagina
+inicial (http://www.lucianominuzzi.com/cerealsul/) ele pede que seja feito login novamente
+(mesmo que tenha acabado de fazer). Outro ponto importante, é que a sessão está
+terminando muito rápido e muitas vezes tem que ficar limpando o cache para poder tirar o
+pedido porque o sistema não está logando da forma correta. Muitas vezes se loga com um
+usuários e aparece o nome do usuário anterior, ou até não aparece nome algum na sessão.
+Outra questão é que quando a sessão finaliza, e por acaso troca-se de página ou atualiza o
+navegador está indo para uma página de erro 404, o correto é redirecionar para login para que
+o usuário perceba que a sessão caiu.
+
+20h
+----------------------------------------------------------------------------------------------
+
+Usuários
+
+- Apesar de ter separado 3 nomes de usuários diferentes, todos estão podendo criar e excluir
+os outros usuários, e todos estão com os mesmos acessos ao sistema. Vendedor está podendo		OK
+criar usuários de Gerente e vendedores, e excluir qualquer usuário. Gerente está podendo
+excluir admins.
+
+10h
+----------------------------------------------------------------------------------------------
+
+Logos e nomes:
+
+- Adicionar as logos da empresa no sistema. 
+
+1h
+----------------------------------------------------------------------------------------------
+
+- Ajustar o nome do site, está cerealsul e deve ser
+cereaissul.																						OK
+
+1h
+----------------------------------------------------------------------------------------------
+
+Formulário de Pedido:
+
+- Data do pagamento cliente – Data do pagamento do fornecedor >= 5. Tem que fazer um if
+para a regra acima. Sempre tem que receber do cliente, e somente 5 dias no mínimo depois
+deve se pagar o fornecedor. De preferência o ideal é que nem deixe selecionar as datas fora da	OK
+regra. Exemplo: Data pagamento cliente 05/05/2019 => só deve deixar selecionar a data
+pagamento fornecedor a partir do dia 10/05/2019 pra frente.
+
+6h
+----------------------------------------------------------------------------------------------
+
+- Deve ser criado um campo de observações no formulário, para que este seja usado no
+pedido. Hoje o pedido está buscando um campo que se chama OBS_MOD no banco, porém
+esta busca está incorreta. O campo que deve ser utilizado é este novo campo a ser criado no		OK
+formulário.
+
+2h
+----------------------------------------------------------------------------------------------
+
+PEDIDO (PDF GERADO):
+
+1 - Deve ser feita uma melhor organização do CSS no pedido, para evitar espaços em branco e
+alocar melhor os dados. Hoje a visualização do pedido não está muito limpa e dificulta o 
+entendimento. Talvez utilizar uma fonte de tamanho menor também possa ajudar a otimizar
+este ponto. O ideal é que o pedido fique em apenas 1 página.
+
+30h
+----------------------------------------------------------------------------------------------
+
+2 - o item Custo Final precisa ser aproximado para duas casa decimais. O calculo precisa ser
+revisto, pois o somatório está errado. Usando por base o pedido 491:
+Custo total de compra: 125.93
+Impostos de venda: 3.4
+Frete: 6.49
+Corretagem: 0.5
+Custo final: 132.92 (deveria ser 136.32)
+
+8h
+----------------------------------------------------------------------------------------------
+
+3 - Está faltando um campo Margem (R$). O campo que temos hoje é em percentual, e tem
+que ser mantido. Porém precisamos de um campo numérico. Apesar do calculo do custo final
+(item anterior) está incorreto, o cálculo da margem % está correto. O novo campo de acordo
+com o pedido 491 deveria ser: 120,00 (Valor de venda) – 136.32 (Custo final) = -16.32 R$.
+
+4h
+----------------------------------------------------------------------------------------------
+
+4 - O campo Margem bruta TOTAL está multiplicando Margem (%) * quantidade de sacos. O
+correto é multiplicar Margem (em REAIS, campo criado no item anterior) * quantidade de
+sacos.
+
+3h
+----------------------------------------------------------------------------------------------
+
+5 - O campo corretagem TOTAL, está com calculo errado. Tem que somar (corretagem de
+compra + corretagem de venda) * quantidade de sacos.
+
+3h
+----------------------------------------------------------------------------------------------
+
+6 - O cálculo do custo final TOTAL tem que acompanhar o calculo do custo final citado acima,
+que também está incorreto (vide item 2).
+
+8h
+----------------------------------------------------------------------------------------------
+
+Contrato (PDF Gerado):
+Alterações no contrato de alguns dados que ficaram incorretos. 
+
+?
+----------------------------------------------------------------------------------------------
+20 + 10 + 1 + 1 + 6 + 2 + 30 + 8 + 4 + 3 + 3 + 8 + ? = 96h

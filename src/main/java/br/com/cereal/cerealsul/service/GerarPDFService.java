@@ -5,6 +5,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -23,12 +24,23 @@ import java.util.stream.Stream;
 
 @Service("GerarPDFService")
 public class GerarPDFService {
+    /*
     private static final String BASE_INPUT_PROD = "webapps/cerealsulapp/WEB-INF/classes/static/pdftemplates/";
     private static final String BASE_OUTPUT_PROD = "/home/lucianominuzzi/webapps/ROOT/cerealsul/PDF/";
     //private static final String BASE_INPUT_PROD = "src/main/resources/static/pdftemplates/";
     //private static final String BASE_OUTPUT_PROD = "src/main/resources/static/output/";
     private static final String BASE_OUTPUT_PDF = "/home/lucianominuzzi/webapps/ROOT/cerealsul/PDF/";
     //private static final String BASE_OUTPUT_PDF = "src/main/resources/static/output/";
+    */
+
+    @Value("${pdf.base.InputProd}")
+    private static String BASE_INPUT_PROD;
+    @Value("${pdf.base.OutputProd}")
+    private static String BASE_OUTPUT_PROD;
+    @Value("${pdf.base.OutputPdf}")
+    private static String BASE_OUTPUT_PDF;
+
+
     private static final String PATH_INPUT = BASE_INPUT_PROD + "pedido.html";
     private static final String PATH_OUTPUT = BASE_OUTPUT_PROD + "htmlPedido_";
     private static final String PATH_INPUT_CONTRATO = BASE_INPUT_PROD + "Contrato_pedido.html";
@@ -120,7 +132,7 @@ public class GerarPDFService {
         mapa.put("LOCAL_EMBARQUE_PRODUTOR", pedidoDetalhe.getLocalEmbarque());
         mapa.put("FILIAL", pedidoDetalhe.getFilialCompra());
         mapa.put("DADOS_BANCARIOS_PRODUTOR", getDescricaoDadosBancarios(pedido.getPedidoDadoBancario()));
-        mapa.put("OBSERVACOES_PRODUTOR", pedido.getObsMod());
+        mapa.put("OBSERVACOES_PRODUTOR", pedidoDetalhe.getCompraObs());
         mapa.put("RAZAO_TRADING", venda.getTradingRazaoNome());
         mapa.put("CIDADE_TRADING", cliente.getLocal());
         mapa.put("ESTADO_TRADING", venda.getTradingEstado());

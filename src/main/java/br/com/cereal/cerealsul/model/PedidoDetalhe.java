@@ -43,6 +43,7 @@ public class PedidoDetalhe {
     private String localEmbarque;
     private String filialCompra;
     private LocalDate compraDataPagamento;
+    private String compraObs;
 
 
     //Venda

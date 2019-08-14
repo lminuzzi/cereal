@@ -68,5 +68,6 @@ public class PedidoDetalheServiceImpl implements PedidoDetalheService {
         pedidoDetalhe.setLocalEmbarque(compra.getLocalEmbarque());
         pedidoDetalhe.setFilialCompra(compra.getFilialCompra());
         pedidoDetalhe.setCompraDataPagamento(compra.getCompraDataPagamento());
+        pedidoDetalhe.setCompraObs(compra.getCompraObs());
     }
 }
